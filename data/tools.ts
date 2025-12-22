@@ -9,10 +9,71 @@ import {
     Regex,
     FileDiff,
     Image,
+    Terminal,
+    Smile,
+    Image as ImageIcon,
+    Lock,
+    Database,
+    BoxSelect,
+    TerminalSquare,
 } from 'lucide-react';
 import { Tool } from '../types';
 
 export const ALL_TOOLS: Tool[] = [
+    {
+        id: 'terminal',
+        name: 'Linux Terminal',
+        description: 'Interactive Linux terminal emulator with a virtual file system. Practice commands safely.',
+        icon: TerminalSquare,
+        path: '/tool/terminal',
+        category: 'Developer',
+        usage: 'Type standard Linux commands like ls, cd, mkdir, cat. Try "help" to see all available commands. Includes neofetch!'
+    },
+    {
+        id: 'glass',
+        name: 'Glassmorphism Gen',
+        description: 'Design beautiful frosted glass effects (Glassmorphism) for your UI. Adjust blur, transparency, and saturation live.',
+        icon: BoxSelect,
+        path: '/tool/glass',
+        category: 'Designer',
+        usage: 'Use the sliders to tweak the backdrop-filter properties. The preview card updates instantly. Click the Copy button to grab the CSS.'
+    },
+    {
+        id: 'sql',
+        name: 'SQL Playground',
+        description: 'Run SQL queries on a private, in-memory SQLite database. Perfect for testing and learning.',
+        icon: Database,
+        path: '/tool/sql',
+        category: 'Developer',
+        usage: 'Write standard SQL queries in the editor. Tables "users" and "orders" are pre-loaded for you. Press Run to see results instantly.'
+    },
+    {
+        id: 'password',
+        name: 'Secure Pass',
+        description: 'Generate strong, secure passwords instantly with custom rules. 100% client-side generation.',
+        icon: Lock,
+        path: '/tool/password',
+        category: 'Utility',
+        usage: 'Adjust the length slider and toggle character types (uppercase, numbers, etc.) to match your requirements. Click "Generate" to create a new password and click the result to copy it.'
+    },
+    {
+        id: 'image',
+        name: 'Image Optimizr',
+        description: 'Compress and convert images locally. Supports WebP, JPEG, PNG resizing and optimization.',
+        icon: ImageIcon,
+        path: '/tool/image',
+        category: 'Creator',
+        usage: 'Drag and drop your image. Adjust the quality slider and max width. Select your output format (WebP is recommended for web). Click compress and download your smaller file.'
+    },
+    {
+        id: 'emoji',
+        name: 'Emoji Library',
+        description: 'Browse, search, and copy thousands of emojis. Supports skin tones and categories.',
+        icon: Smile,
+        path: '/tool/emoji',
+        category: 'Creator',
+        usage: 'Browse the infinite scroll of emojis. Click any emoji to copy it instantly. Use the search bar to find specific icons. Toggle skin tones using the hand icon.'
+    },
     {
         id: 'watermark',
         name: 'AI Watermark Masker',
@@ -21,6 +82,15 @@ export const ALL_TOOLS: Tool[] = [
         path: '/tool/watermark',
         category: 'Creator',
         usage: 'Result images are processed locally. Simply upload your image containing an AI watermark, and the tool will attempt to automatically detect and blur the watermark. You can then download the clean image.'
+    },
+    {
+        id: 'python',
+        name: 'Python shell',
+        description: 'Write and execute Python code directly in your browser. Powered by WebAssembly.',
+        icon: Terminal,
+        path: '/tool/python',
+        category: 'Developer',
+        usage: 'Wait for the Python environment to load. Type standard Python code in the left editor depending on your layout. Click "Run" to execute. The output will appear in the console. Supports standard library imports.'
     },
     {
         id: 'markdown',

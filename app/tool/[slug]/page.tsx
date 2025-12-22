@@ -13,6 +13,13 @@ import { ColorTool } from '@/components/ColorTool';
 import { LoremTool } from '@/components/LoremTool';
 import { DiffTool } from '@/components/DiffTool';
 import { WatermarkTool } from '@/components/WatermarkTool';
+import { PythonTool } from '@/components/PythonTool';
+import { EmojiTool } from '@/components/EmojiTool';
+import { ImageTool } from '@/components/ImageTool';
+import { PasswordTool } from '@/components/PasswordTool';
+import { SqlTool } from '@/components/SqlTool';
+import { GlassTool } from '@/components/GlassTool';
+import { TerminalTool } from '@/components/TerminalTool';
 import { getToolBySlug } from '@/data/tools';
 import { SearchX, ArrowLeft, HelpCircle, X } from 'lucide-react';
 
@@ -34,6 +41,13 @@ const ToolPage = () => {
             case 'lorem': return <LoremTool />;
             case 'diff': return <DiffTool />;
             case 'watermark': return <WatermarkTool />;
+            case 'python': return <PythonTool />;
+            case 'emoji': return <EmojiTool />;
+            case 'image': return <ImageTool />;
+            case 'password': return <PasswordTool />;
+            case 'sql': return <SqlTool />;
+            case 'glass': return <GlassTool />;
+            case 'terminal': return <TerminalTool />;
             default: return null;
         }
     };
@@ -59,7 +73,7 @@ const ToolPage = () => {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Unified Tool Card */}
-            <div className="relative w-full max-w-[95%] 2xl:max-w-[1800px] mx-auto rounded-[2.5rem] bg-white dark:bg-[#121212] border border-gray-100 dark:border-white/5 shadow-2xl shadow-gray-200/50 dark:shadow-black/50 overflow-hidden mb-20 mt-4 min-h-[80vh]">
+            <div className="relative w-full max-w-[95%] 2xl:max-w-[1800px] mx-auto rounded-[2.5rem] bg-white dark:bg-[#121212] border border-gray-100 dark:border-white/5 shadow-2xl shadow-gray-200/50 dark:shadow-black/50 overflow-hidden mb-20 mt-20 min-h-[80vh]">
 
                 {/* Background Decor (Container Level) */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
