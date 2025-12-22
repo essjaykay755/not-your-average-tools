@@ -14,17 +14,26 @@
 ## 🛠️ Available Tools
 
 ### 🎨 Design & Media
--   **Color Studio**: Advanced color picker with contrast checking (Light/Dark mode previews), variable conversion (HEX, RGB, HSL, CMYK), and large circular input.
--   **QR Code Generator**: Create customizable QR codes with various dot styles, corner shapes, and logo overlays. High-res PNG export.
--   **Watermark Pro**: Securely watermark your images locally.
+-   **Color Studio**: Advanced color picker with contrast checking, variable conversion (HEX, RGB, HSL, CMYK), and accessibility previews.
+-   **Image Optimizr**: Compress and resize images locally. Convert between WebP, JPEG, and PNG.
+-   **Glassmorphism Gen**: Visual CSS generator for frosted glass effects with live preview and "Copy CSS".
+-   **QR Code Generator**: Create customizable QR codes with dot styles and logos.
+-   **Watermark Pro**: Add text or image watermarks to your photos securely.
+-   **Emoji Library**: Browse, search, and copy emojis with a modern interface.
 
 ### 📝 Text & Code
--   **Markdown Editor**: Real-time split-pane Markdown editor with live preview, syntax highlighting, and export options (MD, HTML, TXT).
--   **Diff Viewer**: Compare text or code side-by-side with difference highlighting.
--   **Regex Tester**: Test and validate regular expressions in real-time.
--   **JSON Formatter**: Validate, format, and minify JSON data.
--   **Base64 Converter**: Encode and decode text or files instantly.
--   **Lorem Ipsum**: Generate placeholder text with custom parameters.
+-   **Python IDE**: Run Python code directly in your browser (via Pyodide) with a real-time console.
+-   **SQL Playground**: Execute SQL queries on an in-memory SQLite database. visual tables and pre-loaded data.
+-   **Linux Terminal**: An interactive virtual terminal with a realistic file system and core commands.
+-   **Markdown Editor**: Real-time split-pane Markdown editor with live preview.
+-   **Diff Viewer**: Compare text or code side-by-side.
+-   **Regex Tester**: Test and validate regular expressions.
+-   **JSON Formatter**: Validate, format, and minify JSON.
+-   **Base64 Converter**: Encode/decode text or files.
+-   **Lorem Ipsum**: Generate placeholder text.
+
+### 🔐 Security & Utilities
+-   **Secure Pass**: Generate strong, secure passwords with customizable rules (length, chars) and strength meter.
 
 ## 💻 Tech Stack
 
