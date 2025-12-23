@@ -40,18 +40,6 @@ export default function ContactPage() {
                         </div>
                     </Link>
 
-                    <Link href="https://github.com/essjaykay755/not-your-average-tools" target="_blank" className="group p-6 rounded-3xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 hover:border-black dark:hover:border-white transition-all hover:-translate-y-1">
-                        <div className="flex items-center gap-4">
-                            <div className="size-12 rounded-2xl bg-gray-100 dark:bg-white/10 flex items-center justify-center text-text-main dark:text-white group-hover:scale-110 transition-transform">
-                                <Github className="w-6 h-6" />
-                            </div>
-                            <div className="text-left">
-                                <h3 className="text-lg font-bold text-text-main dark:text-white">GitHub</h3>
-                                <p className="text-sm text-text-sub dark:text-gray-400">Check the source.</p>
-                            </div>
-                        </div>
-                    </Link>
-
                     <Link href="https://x.com/essjaykay755" target="_blank" className="group p-6 rounded-3xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 hover:border-black dark:hover:border-white transition-all hover:-translate-y-1">
                         <div className="flex items-center gap-4">
                             <div className="size-12 rounded-2xl bg-black/5 dark:bg-white/10 flex items-center justify-center text-black dark:text-white group-hover:scale-110 transition-transform">
@@ -66,12 +54,7 @@ export default function ContactPage() {
                         </div>
                     </Link>
 
-                    <div className="p-6 rounded-3xl bg-gray-50 dark:bg-white/5 border border-dashed border-gray-200 dark:border-white/10 flex items-center justify-center">
-                        <div className="text-center opacity-50">
-                            <MessageSquare className="w-8 h-8 mx-auto mb-2" />
-                            <p className="text-xs font-bold uppercase tracking-widest">More Channels Soon</p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

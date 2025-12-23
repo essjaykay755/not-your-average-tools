@@ -33,7 +33,7 @@ export default function Home() {
               Better tools for <br className="hidden md:block" /> <span className="text-primary">extraordinary creators</span>
             </h1>
             <p className="text-text-sub dark:text-gray-400 text-lg md:text-xl font-normal leading-relaxed max-w-2xl mx-auto">
-              A curated arsenal of high-performance utilities. <span className="font-semibold text-text-main dark:text-white">Fully Private</span>, <span className="font-semibold text-text-main dark:text-white">On-Device</span>, and <span className="font-semibold text-text-main dark:text-white">Open Source</span>.
+              A curated arsenal of high-performance utilities. <span className="font-semibold text-text-main dark:text-white">Fully Private</span>, <span className="font-semibold text-text-main dark:text-white">On-Device</span>, and <span className="font-semibold text-text-main dark:text-white">100% Free</span>.
             </p>
           </div>
 

@@ -39,8 +39,8 @@ export default function AboutPage() {
                     </div>
                     <div className="p-8 rounded-3xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 hover:border-primary/30 transition-colors">
                         <Code className="w-10 h-10 text-primary mb-6" />
-                        <h3 className="text-xl font-bold text-text-main dark:text-white mb-3">Open Source</h3>
-                        <p className="text-text-sub dark:text-gray-400">Transparent to the core. Audit the code, contribute to the repo, or fork it for your own needs.</p>
+                        <h3 className="text-xl font-bold text-text-main dark:text-white mb-3">100% Free</h3>
+                        <p className="text-text-sub dark:text-gray-400">Free to use for everyone. No hidden costs, no premium tiers, just great tools available to all.</p>
                     </div>
                 </div>
 

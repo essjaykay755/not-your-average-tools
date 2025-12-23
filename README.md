@@ -7,9 +7,9 @@
 
 ## 🚀 Core Values
 
--   **Fully Private**: Your data never leaves your browser. No server uploads, no tracking.
+-   **Fully Private**: Your data never leaves your browser. No server uploads.
 -   **On-Device Speed**: Zero latency. All processing happens locally on your machine.
--   **Open Source**: Transparent, community-driven, and free forever.
+-   **100% Free**: Transparent, community-driven, and free forever.
 
 ## 🛠️ Available Tools
 
@@ -47,7 +47,7 @@ Built with a modern, type-safe stack for maximum performance:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/essjaykay755/not-your-average-tools.git
+    git clone <your-repo-url>
     cd not-your-average-tools
     ```
 
@@ -72,4 +72,4 @@ Contributions are welcome! Feel free to open issues or submit pull requests to h
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is 100% Free and available under the [MIT License](LICENSE).
