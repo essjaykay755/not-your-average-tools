@@ -30,6 +30,8 @@ import { PxRemTool } from '@/components/PxRemTool';
 import { KeyEventsTool } from '@/components/KeyEventsTool';
 import { IcoConverterTool } from '@/components/IcoConverterTool';
 import { AppIconGeneratorTool } from '@/components/AppIconGeneratorTool';
+import { TimestampTool } from '@/components/TimestampTool';
+import { HashGeneratorTool } from '@/components/HashGeneratorTool';
 import { getToolBySlug } from '@/data/tools';
 import { SearchX, ArrowLeft, HelpCircle, X } from 'lucide-react';
 
@@ -68,6 +70,8 @@ const ToolPage = () => {
             case 'key-events': return <KeyEventsTool />;
             case 'ico-converter': return <IcoConverterTool />;
             case 'app-icon-generator': return <AppIconGeneratorTool />;
+            case 'timestamp': return <TimestampTool />;
+            case 'hash': return <HashGeneratorTool />;
             default: return null;
         }
     };
@@ -93,7 +97,7 @@ const ToolPage = () => {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Unified Tool Card */}
-            <div className="relative w-full max-w-[95%] 2xl:max-w-[1800px] mx-auto rounded-[2.5rem] bg-white dark:bg-[#121212] border border-gray-100 dark:border-white/5 shadow-2xl shadow-gray-200/50 dark:shadow-black/50 overflow-hidden mb-20 mt-20 min-h-[80vh]">
+            <div className="relative w-full max-w-[95%] 2xl:max-w-[1800px] mx-auto rounded-[2.5rem] bg-white dark:bg-[#121212] border border-gray-100 dark:border-white/5 shadow-2xl shadow-gray-200/50 dark:shadow-black/50 overflow-hidden mb-20 mt-6 min-h-[80vh]">
 
                 {/* Background Decor (Container Level) */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>

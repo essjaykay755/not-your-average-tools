@@ -263,6 +263,24 @@ export const ALL_TOOLS: Tool[] = [
         path: '/tool/app-icon-generator',
         category: 'Developer',
         usage: 'Upload a 1024x1024 or larger image. The tool will automatically resize and generate all required icon sizes for Android (mipmap) and iOS (AppIcon). Download as a structured ZIP file.'
+    },
+    {
+        id: 'timestamp',
+        name: 'Timestamp Humanizer',
+        description: 'Convert Unix timestamps to readable dates and vice versa. Debug time issues instantly.',
+        icon: Clock,
+        path: '/tool/timestamp',
+        category: 'Developer',
+        usage: 'Enter a Unix timestamp (seconds or milliseconds) or a date string. The tool converts it to UTC, Local, and relative time formats.'
+    },
+    {
+        id: 'hash',
+        name: 'Hash Generator',
+        description: 'Create SHA-1 and SHA-256 hashes for file verification and security.',
+        icon: ShieldCheck,
+        path: '/tool/hash',
+        category: 'Security',
+        usage: 'Enter text or upload a file. The tool calculates SHA-1 and SHA-256 hashes locally using the browser\'s secure crypto API.'
     }
 ];
 

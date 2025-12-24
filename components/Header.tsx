@@ -51,17 +51,7 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand */}
         <Link href="/" className="group flex items-center gap-3 select-none relative">
-            {/* Watermark Logo (Top Corner style) */}
-            <div className="absolute -top-12 -left-12 opacity-[0.03] dark:opacity-[0.05] pointer-events-none transform -rotate-12 transition-transform group-hover:rotate-0 duration-700">
-               <Image 
-                 src="/logo.png" 
-                 alt="" 
-                 width={200} 
-                 height={200} 
-                 className="w-[200px] h-[200px]"
-                 priority
-               />
-            </div>
+
 
           <div className="relative flex items-center gap-3">
             <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

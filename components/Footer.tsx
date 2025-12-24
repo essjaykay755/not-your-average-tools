@@ -22,8 +22,8 @@ export const Footer: React.FC = () => {
           {/* Module 1: Brand & Identity (Span 5) */}
           <div className="md:col-span-5 bg-gray-50 dark:bg-white/5 rounded-3xl p-8 flex flex-col justify-between border border-gray-100 dark:border-white/10 group hover:border-primary/50 transition-colors">
             <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="relative w-10 h-10 md:w-12 md:h-12">
+              <div className="flex items-center gap-3 mb-4 relative">
+                <div className="relative w-10 h-10 md:w-12 md:h-12 z-10">
                    <Image 
                       src="/logo.png" 
                       alt="Logo" 
@@ -31,7 +31,10 @@ export const Footer: React.FC = () => {
                       className="object-contain"
                    />
                 </div>
-                <h3 className="text-2xl font-black tracking-tighter text-text-main dark:text-white">NotYourAverage<span className="text-primary">.Tools</span></h3>
+                {/* Footer Glow/Shadow behind logo */}
+                 <div className="absolute -left-4 -top-4 w-24 h-24 bg-primary/20 blur-xl rounded-full opacity-50 pointer-events-none"></div>
+
+                <h3 className="text-2xl font-black tracking-tighter text-text-main dark:text-white relative z-10">NotYourAverage<span className="text-primary">.Tools</span></h3>
               </div>
               <p className="text-text-sub dark:text-gray-400 leading-relaxed">
                 The elite digital arsenal. <strong className="text-text-main dark:text-white">Fully Private</strong>, <strong className="text-text-main dark:text-white">On-Device</strong>, and <strong className="text-text-main dark:text-white">100% Free</strong>. Built for performance, designed for precision.
