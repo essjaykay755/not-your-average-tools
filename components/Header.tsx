@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Moon, Sun } from "lucide-react";
 
 export const Header: React.FC = () => {
@@ -49,9 +50,32 @@ export const Header: React.FC = () => {
     <header className="w-full relative z-50 pt-8 px-6 md:px-8 mb-4 bg-transparent">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand */}
-        <Link href="/" className="group flex items-center gap-2 select-none">
-          <div className="relative">
+        <Link href="/" className="group flex items-center gap-3 select-none relative">
+            {/* Watermark Logo (Top Corner style) */}
+            <div className="absolute -top-12 -left-12 opacity-[0.03] dark:opacity-[0.05] pointer-events-none transform -rotate-12 transition-transform group-hover:rotate-0 duration-700">
+               <Image 
+                 src="/logo.png" 
+                 alt="" 
+                 width={200} 
+                 height={200} 
+                 className="w-[200px] h-[200px]"
+                 priority
+               />
+            </div>
+
+          <div className="relative flex items-center gap-3">
             <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            {/* Main Logo */}
+            <div className="relative z-10 w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 transition-transform duration-300">
+                <Image 
+                    src="/logo.png" 
+                    alt="Logo" 
+                    fill
+                    className="object-contain"
+                />
+            </div>
+
             <span className="relative z-10 text-2xl md:text-3xl font-black tracking-tighter text-text-main dark:text-white group-hover:scale-105 transition-transform duration-300 block">
               NotYourAverage<span className="text-primary">.Tools</span>
             </span>

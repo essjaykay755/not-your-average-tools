@@ -2,6 +2,7 @@
 
 import { ALL_TOOLS } from '@/data/tools';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const Footer: React.FC = () => {
   return (
@@ -21,16 +22,22 @@ export const Footer: React.FC = () => {
           {/* Module 1: Brand & Identity (Span 5) */}
           <div className="md:col-span-5 bg-gray-50 dark:bg-white/5 rounded-3xl p-8 flex flex-col justify-between border border-gray-100 dark:border-white/10 group hover:border-primary/50 transition-colors">
             <div>
-              <div className="size-12 bg-white dark:bg-black rounded-2xl flex items-center justify-center text-primary shadow-sm mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span className="material-symbols-outlined text-3xl">construction</span>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="relative w-10 h-10 md:w-12 md:h-12">
+                   <Image 
+                      src="/logo.png" 
+                      alt="Logo" 
+                      fill
+                      className="object-contain"
+                   />
+                </div>
+                <h3 className="text-2xl font-black tracking-tighter text-text-main dark:text-white">NotYourAverage<span className="text-primary">.Tools</span></h3>
               </div>
-              <h3 className="text-2xl font-black tracking-tighter text-text-main dark:text-white mb-2">NotYourAverage<span className="text-primary">.Tools</span></h3>
               <p className="text-text-sub dark:text-gray-400 leading-relaxed">
                 The elite digital arsenal. <strong className="text-text-main dark:text-white">Fully Private</strong>, <strong className="text-text-main dark:text-white">On-Device</strong>, and <strong className="text-text-main dark:text-white">100% Free</strong>. Built for performance, designed for precision.
               </p>
             </div>
             <div className="flex gap-3 mt-8">
-
               <a href="https://x.com/essjaykay755" target="_blank" rel="noopener noreferrer" className="size-10 rounded-full bg-white dark:bg-black flex items-center justify-center text-text-main dark:text-white hover:bg-primary hover:text-white transition-all">
                 <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />

@@ -24,6 +24,12 @@ import { MeshTool } from '@/components/MeshTool';
 import { CronTool } from '@/components/CronTool';
 import { TotpTool } from '@/components/TotpTool';
 import { PortraitTool } from '@/components/PortraitTool';
+import { JwtTool } from '@/components/JwtTool';
+import { SocialResizeTool } from '@/components/SocialResizeTool';
+import { PxRemTool } from '@/components/PxRemTool';
+import { KeyEventsTool } from '@/components/KeyEventsTool';
+import { IcoConverterTool } from '@/components/IcoConverterTool';
+import { AppIconGeneratorTool } from '@/components/AppIconGeneratorTool';
 import { getToolBySlug } from '@/data/tools';
 import { SearchX, ArrowLeft, HelpCircle, X } from 'lucide-react';
 
@@ -56,6 +62,12 @@ const ToolPage = () => {
             case 'cron': return <CronTool />;
             case 'totp': return <TotpTool />;
             case 'portrait': return <PortraitTool />;
+            case 'jwt': return <JwtTool />;
+            case 'social-resize': return <SocialResizeTool />;
+            case 'px-rem': return <PxRemTool />;
+            case 'key-events': return <KeyEventsTool />;
+            case 'ico-converter': return <IcoConverterTool />;
+            case 'app-icon-generator': return <AppIconGeneratorTool />;
             default: return null;
         }
     };

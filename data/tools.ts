@@ -20,6 +20,12 @@ import {
     Clock,
     KeyRound,
     Camera,
+    ShieldCheck,
+    Crop,
+    ArrowLeftRight,
+    Keyboard,
+    FileImage,
+    AppWindow,
 } from 'lucide-react';
 import { Tool } from '../types';
 
@@ -203,6 +209,60 @@ export const ALL_TOOLS: Tool[] = [
         path: '/tool/diff',
         category: 'Utility',
         usage: 'Paste the original text in the left panel and the modified text in the right panel. The tool will highlight added, removed, and modified lines to show you exactly what changed.'
+    },
+    {
+        id: 'jwt',
+        name: 'JWT Decoder',
+        description: 'Decode JSON Web Tokens (JWT) to view their header and payload. 100% client-side.',
+        icon: ShieldCheck,
+        path: '/tool/jwt',
+        category: 'Developer',
+        usage: 'Paste your JWT token into the input area. The tool will decode the header and payload, showing them in a readable JSON format. It also displays the token expiration time if present.'
+    },
+    {
+        id: 'social-resize',
+        name: 'Social Image Resizer',
+        description: 'Crop and resize images for Instagram, Twitter, and LinkedIn with one click.',
+        icon: Crop,
+        path: '/tool/social-resize',
+        category: 'Creator',
+        usage: 'Upload an image and select a target platform or custom aspect ratio. Drag the crop area to select the best part of the image, then download the resized version.'
+    },
+    {
+        id: 'px-rem',
+        name: 'PX to REM Converter',
+        description: 'Convert between pixels and REM units relative to your root font size.',
+        icon: ArrowLeftRight,
+        path: '/tool/px-rem',
+        category: 'Designer',
+        usage: 'Enter a value in either Pixels or REM. The other field updates instantly. You can also customize the root font size (default is 16px) for accurate conversions.'
+    },
+    {
+        id: 'key-events',
+        name: 'Key Events Viewer',
+        description: 'Press any key to see its JavaScript event codes (key, code, which) for debugging.',
+        icon: Keyboard,
+        path: '/tool/key-events',
+        category: 'Developer',
+        usage: 'Simply press any key on your keyboard. The tool will display a large visual representation of the key along with its default event properties like e.key, e.code, and deprecated e.which.'
+    },
+    {
+        id: 'ico-converter',
+        name: 'Image to ICO',
+        description: 'Convert PNG or JPG images to .ico format for website favicons. Supports multiple sizes.',
+        icon: FileImage,
+        path: '/tool/ico-converter',
+        category: 'Developer',
+        usage: 'Upload an image (PNG/JPG). Select the desired icon sizes (16x16, 32x32, etc.). Download the generated .ico file instantly.'
+    },
+    {
+        id: 'app-icon-generator',
+        name: 'App Icon Generator',
+        description: 'Generate complete icon packs for Android and iOS from a single high-res image.',
+        icon: AppWindow,
+        path: '/tool/app-icon-generator',
+        category: 'Developer',
+        usage: 'Upload a 1024x1024 or larger image. The tool will automatically resize and generate all required icon sizes for Android (mipmap) and iOS (AppIcon). Download as a structured ZIP file.'
     }
 ];
 
