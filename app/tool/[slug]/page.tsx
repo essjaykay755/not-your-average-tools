@@ -20,6 +20,10 @@ import { PasswordTool } from '@/components/PasswordTool';
 import { SqlTool } from '@/components/SqlTool';
 import { GlassTool } from '@/components/GlassTool';
 import { TerminalTool } from '@/components/TerminalTool';
+import { MeshTool } from '@/components/MeshTool';
+import { CronTool } from '@/components/CronTool';
+import { TotpTool } from '@/components/TotpTool';
+import { PortraitTool } from '@/components/PortraitTool';
 import { getToolBySlug } from '@/data/tools';
 import { SearchX, ArrowLeft, HelpCircle, X } from 'lucide-react';
 
@@ -48,6 +52,10 @@ const ToolPage = () => {
             case 'sql': return <SqlTool />;
             case 'glass': return <GlassTool />;
             case 'terminal': return <TerminalTool />;
+            case 'mesh': return <MeshTool />;
+            case 'cron': return <CronTool />;
+            case 'totp': return <TotpTool />;
+            case 'portrait': return <PortraitTool />;
             default: return null;
         }
     };

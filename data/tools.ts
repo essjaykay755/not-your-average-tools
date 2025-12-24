@@ -16,10 +16,50 @@ import {
     Database,
     BoxSelect,
     TerminalSquare,
+    Blend,
+    Clock,
+    KeyRound,
+    Camera,
 } from 'lucide-react';
 import { Tool } from '../types';
 
 export const ALL_TOOLS: Tool[] = [
+    {
+        id: 'portrait',
+        name: 'Portrait Mode',
+        description: 'Add professional background blur to your photos using AI-powered person segmentation. Like camera portrait mode!',
+        icon: Camera,
+        path: '/tool/portrait',
+        category: 'Creator',
+        usage: 'Upload a portrait photo. AI will detect the person and blur the background. Adjust blur intensity and download.'
+    },
+    {
+        id: 'mesh',
+        name: 'Mesh Gradient',
+        description: 'Create stunning organic mesh gradients with multiple color points. Export as CSS or SVG.',
+        icon: Blend,
+        path: '/tool/mesh',
+        category: 'Designer',
+        usage: 'Add color points and drag them around. Use presets for quick palettes. Adjust blur for softness. Copy CSS or download SVG.'
+    },
+    {
+        id: 'cron',
+        name: 'Crontab Guru',
+        description: 'Build and understand cron expressions with plain English explanations and next run previews.',
+        icon: Clock,
+        path: '/tool/cron',
+        category: 'Developer',
+        usage: 'Type or build your cron expression. See when it will run next and get a human-readable description. Use presets for common schedules.'
+    },
+    {
+        id: 'totp',
+        name: 'TOTP Authenticator',
+        description: 'Generate 2FA codes locally. Your secrets never leave your browser. Privacy-focused alternative to auth apps.',
+        icon: KeyRound,
+        path: '/tool/totp',
+        category: 'Security',
+        usage: 'Add your TOTP secret key (Base32) from any service. Codes refresh every 30 seconds. Click to copy. All data stays local.'
+    },
     {
         id: 'terminal',
         name: 'Linux Terminal',
