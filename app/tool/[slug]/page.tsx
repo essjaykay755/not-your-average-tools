@@ -32,6 +32,10 @@ import { IcoConverterTool } from '@/components/IcoConverterTool';
 import { AppIconGeneratorTool } from '@/components/AppIconGeneratorTool';
 import { TimestampTool } from '@/components/TimestampTool';
 import { HashGeneratorTool } from '@/components/HashGeneratorTool';
+import { OpenGraphTool } from '@/components/OpenGraphTool';
+import { MetaTagTool } from '@/components/MetaTagTool';
+import { CorsTool } from '@/components/CorsTool';
+import { WebhookTool } from '@/components/WebhookTool';
 import { getToolBySlug } from '@/data/tools';
 import { SearchX, ArrowLeft, HelpCircle, X } from 'lucide-react';
 
@@ -72,6 +76,10 @@ const ToolPage = () => {
             case 'app-icon-generator': return <AppIconGeneratorTool />;
             case 'timestamp': return <TimestampTool />;
             case 'hash': return <HashGeneratorTool />;
+            case 'og-preview': return <OpenGraphTool />;
+            case 'meta-tags': return <MetaTagTool />;
+            case 'cors': return <CorsTool />;
+            case 'webhook': return <WebhookTool />;
             default: return null;
         }
     };

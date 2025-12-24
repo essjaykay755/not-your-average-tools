@@ -26,6 +26,9 @@ import {
     Keyboard,
     FileImage,
     AppWindow,
+    Eye,
+    Globe,
+    Webhook,
 } from 'lucide-react';
 import { Tool } from '../types';
 
@@ -281,6 +284,42 @@ export const ALL_TOOLS: Tool[] = [
         path: '/tool/hash',
         category: 'Security',
         usage: 'Enter text or upload a file. The tool calculates SHA-1 and SHA-256 hashes locally using the browser\'s secure crypto API.'
+    },
+    {
+        id: 'og-preview',
+        name: 'Open Graph Preview',
+        description: 'Visualize how links appear on X(Twitter), Facebook, and LinkedIn before publishing.',
+        icon: Eye,
+        path: '/tool/og-preview',
+        category: 'Creator',
+        usage: 'Enter your page metadata manually to preview how your link will appear on major social platforms. Copy ready-to-use meta tags.'
+    },
+    {
+        id: 'meta-tags',
+        name: 'Meta Tag Generator',
+        description: 'Generate complete SEO and social meta tags for your website.',
+        icon: Globe,
+        path: '/tool/meta-tags',
+        category: 'Developer',
+        usage: 'Fill in page details across Basic SEO, Open Graph, Twitter, and Technical tabs. Copy the generated HTML meta tags.'
+    },
+    {
+        id: 'cors',
+        name: 'API Tester',
+        description: 'Test REST APIs directly from your browser with custom headers and request body.',
+        icon: Globe,
+        path: '/tool/cors',
+        category: 'Developer',
+        usage: 'Enter a URL, select HTTP method, add headers and body. Works with CORS-enabled APIs only (most public APIs).'
+    },
+    {
+        id: 'webhook',
+        name: 'Webhook Tester',
+        description: 'Inspect incoming webhooks with request headers and body logging.',
+        icon: Webhook,
+        path: '/tool/webhook',
+        category: 'Developer',
+        usage: 'Get a unique webhook URL. Use the Simulate button to see how requests appear, or send real requests to inspect.'
     }
 ];
 
