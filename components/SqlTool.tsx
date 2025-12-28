@@ -2,9 +2,17 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs';
+import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
 import { Play, Database, Trash2, RefreshCcw, Table as TableIcon } from 'lucide-react';
+
+// Safe highlight function that checks if language exists
+const highlightCode = (code: string) => {
+    if (Prism.languages.sql) {
+        return Prism.highlight(code, Prism.languages.sql, 'sql');
+    }
+    return code; // Return plain text if SQL grammar not loaded
+};
 
 declare global {
     interface Window {
@@ -156,7 +164,7 @@ export const SqlTool: React.FC = () => {
                             <Editor
                                 value={query}
                                 onValueChange={code => setQuery(code)}
-                                highlight={code => highlight(code, languages.sql, 'sql')}
+                                highlight={highlightCode}
                                 padding={24}
                                 className="prism-editor min-h-[300px]"
                                 textareaClassName="focus:outline-none"
