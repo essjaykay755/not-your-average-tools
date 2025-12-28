@@ -29,6 +29,10 @@ import {
     Eye,
     Globe,
     Webhook,
+    Binary,
+    BookOpen,
+    Users,
+    Pipette,
 } from 'lucide-react';
 import { Tool } from '../types';
 
@@ -320,6 +324,42 @@ export const ALL_TOOLS: Tool[] = [
         path: '/tool/webhook',
         category: 'Developer',
         usage: 'Get a unique webhook URL. Use the Simulate button to see how requests appear, or send real requests to inspect.'
+    },
+    {
+        id: 'ascii-art',
+        name: 'ASCII Art Generator',
+        description: 'Convert any image into retro ASCII art. Adjustable width, character density, and inversion.',
+        icon: Binary,
+        path: '/tool/ascii-art',
+        category: 'Creator',
+        usage: 'Upload an image, adjust the output width and character set, then copy or download the ASCII art.'
+    },
+    {
+        id: 'regex-explainer',
+        name: 'Regex to English',
+        description: 'Paste any regular expression and get a plain English explanation of what it does.',
+        icon: BookOpen,
+        path: '/tool/regex-explainer',
+        category: 'Developer',
+        usage: 'Enter a regex pattern. See a token-by-token breakdown with color-coded explanations and a human-readable summary.'
+    },
+    {
+        id: 'fake-data',
+        name: 'Fake Data Generator',
+        description: 'Generate realistic fake names, emails, addresses, and more for testing. 100% private.',
+        icon: Users,
+        path: '/tool/fake-data',
+        category: 'Developer',
+        usage: 'Select how many people to generate. Click to copy individual fields. Export as JSON for your tests.'
+    },
+    {
+        id: 'color-palette',
+        name: 'Color Palette Extractor',
+        description: 'Extract a beautiful color palette from any image using AI-powered color analysis.',
+        icon: Pipette,
+        path: '/tool/color-palette',
+        category: 'Design',
+        usage: 'Upload an image. The tool extracts dominant colors using K-means clustering. Click to copy, or export as CSS variables.'
     }
 ];
 

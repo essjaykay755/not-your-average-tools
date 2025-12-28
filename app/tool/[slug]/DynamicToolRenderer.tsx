@@ -46,6 +46,10 @@ export const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
     'meta-tags': dynamic(() => import('@/components/MetaTagTool').then(m => ({ default: m.MetaTagTool })), { loading: () => <ToolSkeleton /> }),
     'cors': dynamic(() => import('@/components/CorsTool').then(m => ({ default: m.CorsTool })), { loading: () => <ToolSkeleton /> }),
     'webhook': dynamic(() => import('@/components/WebhookTool').then(m => ({ default: m.WebhookTool })), { loading: () => <ToolSkeleton /> }),
+    'ascii-art': dynamic(() => import('@/components/AsciiArtTool').then(m => ({ default: m.AsciiArtTool })), { loading: () => <ToolSkeleton />, ssr: false }),
+    'regex-explainer': dynamic(() => import('@/components/RegexExplainerTool').then(m => ({ default: m.RegexExplainerTool })), { loading: () => <ToolSkeleton /> }),
+    'fake-data': dynamic(() => import('@/components/FakeDataTool').then(m => ({ default: m.FakeDataTool })), { loading: () => <ToolSkeleton /> }),
+    'color-palette': dynamic(() => import('@/components/ColorPaletteTool').then(m => ({ default: m.ColorPaletteTool })), { loading: () => <ToolSkeleton />, ssr: false }),
 };
 
 interface DynamicToolRendererProps {
