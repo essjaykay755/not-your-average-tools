@@ -50,6 +50,7 @@ export const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
     'regex-explainer': dynamic(() => import('@/components/RegexExplainerTool').then(m => ({ default: m.RegexExplainerTool })), { loading: () => <ToolSkeleton /> }),
     'fake-data': dynamic(() => import('@/components/FakeDataTool').then(m => ({ default: m.FakeDataTool })), { loading: () => <ToolSkeleton /> }),
     'color-palette': dynamic(() => import('@/components/ColorPaletteTool').then(m => ({ default: m.ColorPaletteTool })), { loading: () => <ToolSkeleton />, ssr: false }),
+    'code-snippet': dynamic(() => import('@/components/CodeSnippetGeneratorTool').then(m => ({ default: m.CodeSnippetGeneratorTool })), { loading: () => <ToolSkeleton />, ssr: false }),
 };
 
 interface DynamicToolRendererProps {

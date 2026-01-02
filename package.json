@@ -20,6 +20,7 @@
     "diff": "^8.0.2",
     "emoji-picker-react": "^4.16.1",
     "framer-motion": "^12.23.26",
+    "html-to-image": "^1.11.13",
     "jszip": "^3.10.1",
     "lucide-react": "^0.562.0",
     "maath": "^0.10.8",

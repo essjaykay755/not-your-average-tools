@@ -6,6 +6,7 @@ import {
     Palette,
     Type,
     Code,
+    Code2,
     Regex,
     FileDiff,
     Image,
@@ -351,6 +352,15 @@ export const ALL_TOOLS: Tool[] = [
         path: '/tool/fake-data',
         category: 'Developer',
         usage: 'Select how many people to generate. Click to copy individual fields. Export as JSON for your tests.'
+    },
+    {
+        id: 'code-snippet',
+        name: 'Snippet Generator',
+        description: 'Create beautiful, aesthetic screenshots of your code with syntax highlighting and custom backgrounds.',
+        icon: Code2,
+        path: '/tool/code-snippet',
+        category: 'Developer',
+        usage: 'Paste your code, select a language and theme. Adjust the improved window verification controls, padding, and background gradient. Download high-res PNG.'
     },
     {
         id: 'color-palette',
