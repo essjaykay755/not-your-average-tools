@@ -17,9 +17,10 @@ interface ToolPageClientProps {
 export function ToolPageClient({ slug, name, description, category, usage, children }: ToolPageClientProps) {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-    // Look up the tool on the client side to get the icon component
+    // Look up the tool on the client side to get the icon component and usage steps
     const tool = getToolBySlug(slug);
     const IconComponent = tool?.icon;
+    const usageSteps = tool?.usageSteps;
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -109,9 +110,29 @@ export function ToolPageClient({ slug, name, description, category, usage, child
                                     <span className="size-1.5 rounded-full bg-primary"></span>
                                     How to use
                                 </h3>
-                                <p className="text-text-sub dark:text-gray-300 leading-relaxed text-sm">
-                                    {usage}
-                                </p>
+                                {usageSteps && usageSteps.length > 0 ? (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {usageSteps.map((step, idx) => (
+                                            <div key={idx} className="bg-gray-50 dark:bg-white/5 p-4 rounded-xl border border-gray-100 dark:border-white/5">
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    {step.icon && (
+                                                        <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                                            <step.icon className="w-4 h-4" />
+                                                        </div>
+                                                    )}
+                                                    <h4 className="font-bold text-sm text-text-main dark:text-gray-200">{step.title}</h4>
+                                                </div>
+                                                <p className="text-xs text-text-sub dark:text-gray-400 leading-relaxed">
+                                                    {step.description}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p className="text-text-sub dark:text-gray-300 leading-relaxed text-sm">
+                                        {usage}
+                                    </p>
+                                )}
                             </div>
                         </div>
                         <div className="mt-8 pt-6 border-t border-gray-100 dark:border-white/5 flex justify-end">

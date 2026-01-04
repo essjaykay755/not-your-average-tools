@@ -10,6 +10,11 @@ export interface Tool {
   imageUrl?: string;
   featured?: boolean;
   usage: string;
+  usageSteps?: {
+    title: string;
+    description: string;
+    icon?: any;
+  }[];
 }
 
 export enum Theme {

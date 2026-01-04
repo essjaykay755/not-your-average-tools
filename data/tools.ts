@@ -34,6 +34,8 @@ import {
     BookOpen,
     Users,
     Pipette,
+    Download,
+    Layout,
 } from 'lucide-react';
 import { Tool } from '../types';
 
@@ -360,7 +362,29 @@ export const ALL_TOOLS: Tool[] = [
         icon: Code2,
         path: '/tool/code-snippet',
         category: 'Developer',
-        usage: 'Paste your code, select a language and theme. Adjust the improved window verification controls, padding, and background gradient. Download high-res PNG.'
+        usage: 'Paste your code, select a language and theme. Adjust the improved window verification controls, padding, and background gradient. Download high-res PNG.',
+        usageSteps: [
+            {
+                title: 'Paste & Edit',
+                description: 'Paste your code into the editor. We support syntax highlighting for TypeScript, Python, SQL, and more.',
+                icon: Code2
+            },
+            {
+                title: 'Style It',
+                description: 'Choose from premium themes like Tomorrow Night or Okaidia to match your aesthetic.',
+                icon: Palette
+            },
+            {
+                title: 'Customize',
+                description: 'Pick a trending gradient background, adjust padding, or toggle window controls.',
+                icon: Layout
+            },
+            {
+                title: 'Export',
+                description: 'Download a high-quality 2x pixel ratio PNG, perfect for sharing on Twitter or LinkedIn.',
+                icon: Download
+            }
+        ]
     },
     {
         id: 'color-palette',

@@ -13,8 +13,8 @@ import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-tsx';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-sql';
-import 'prismjs/themes/prism-tomorrow.css'; // Default theme
-import { toPng } from 'html-to-image';
+import { PRISM_THEMES, PrismThemeKey } from '../data/prismThemes';
+import * as htmlToImage from 'html-to-image';
 import { Download, Copy, Moon, Sun, Monitor, Code2, Palette, Type, Layout, Image as ImageIcon } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -35,31 +35,31 @@ const LANGUAGES = [
 ];
 
 const BACKGROUNDS = [
-    // Gradients
-    { name: 'Gradient 1', value: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' },
-    { name: 'Gradient 2', value: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' },
-    { name: 'Gradient 3', value: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)' },
-    { name: 'Gradient 4', value: 'linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)' },
-    // Dark Gradients
-    { name: 'Dark 1', value: 'linear-gradient(to right, #434343 0%, #000000 100%)' },
-    { name: 'Dark 2', value: 'linear-gradient(to right, #09203f 0%, #537895 100%)' },
-    { name: 'Purple', value: 'linear-gradient(to top, #30cfd0 0%, #330867 100%)' },
-    { name: 'Candy', value: 'linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%)' },
-    // Mesh / Abstract (CSS Approximation of "MacBook" vibes)
-    { name: 'Big Sur', value: 'linear-gradient(to bottom, #dbeafe 0%, #93c5fd 20%, #60a5fa 40%, #2563eb 60%, #1e40af 80%, #0f172a 100%)' },  // Simplified vertical
-    { name: 'Monterey', value: 'linear-gradient(to bottom, #fbc2eb 0%, #a6c1ee 100%)' },
-    { name: 'Abstract 1', value: 'conic-gradient(from 90deg at 50% 50%, #E2E2E2 0%, #C9D6FF 50%, #E2E2E2 100%)' },
-    { name: 'Abstract 2', value: 'radial-gradient(circle at 50% 50%, #ffffff 0%, #000000 100%)' },
-    { name: 'Mesh 1', value: 'radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%)' },
-    { name: 'Mesh 2', value: 'radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0, transparent 50%), radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0, transparent 50%), radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0, transparent 50%)' },
-    { name: 'Mesh 3', value: 'radial-gradient(at 0% 0%, hsla(192,100%,50%,1) 0, transparent 50%), radial-gradient(at 100% 100%, hsla(280,100%,50%,1) 0, transparent 50%)' },
+    // Trending Gradients
+    { name: 'Cotton Candy', value: 'linear-gradient(135deg, #E0C3FC 0%, #8EC5FC 100%)' },
+    { name: 'Paradise', value: 'linear-gradient(135deg, #96fbc4 0%, #f9f586 100%)' },
+    { name: 'Midnight City', value: 'linear-gradient(135deg, #1f4037 0%, #99f2c8 100%)' },
+    { name: 'Purple Love', value: 'linear-gradient(135deg, #cc2b5e 0%, #753a88 100%)' },
+    { name: 'Sunset Drive', value: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+    { name: 'Northern Lights', value: 'linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%)' },
+    { name: 'Passion', value: 'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)' },
+    
+    // Complex Mesh / Aura
+    { name: 'Aura 1', value: 'radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%)' },
+    { name: 'Aura 2', value: 'radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0, transparent 50%), radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0, transparent 50%), radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0, transparent 50%)' },
+    { name: 'Aura 3', value: 'radial-gradient(at 0% 100%, hsla(192,100%,50%,1) 0, transparent 50%), radial-gradient(at 100% 100%, hsla(280,100%,50%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(340,100%,70%,1) 0, transparent 50%)' },
+    { name: 'Glassy', value: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0))' },
+    
+    // Deep & Dark
+    { name: 'Deep Space', value: 'linear-gradient(to bottom, #000000, #434343)' },
+    { name: 'Midnight', value: 'linear-gradient(to right, #232526, #414345)' },
+
     // Solids
-    { name: 'Solid Gray', value: '#1e293b' },
-    { name: 'Solid Black', value: '#000000' },
+    { name: 'Slate', value: '#1e293b' },
+    { name: 'Black', value: '#000000' },
+    { name: 'White', value: '#ffffff' },
     { name: 'Transparent', value: 'transparent' },
 ];
-
-const PADDINGS = [16, 32, 64, 96];
 
 export const CodeSnippetGeneratorTool: React.FC = () => {
     const [code, setCode] = useState(`const greet = (name: string) => {
@@ -68,13 +68,20 @@ export const CodeSnippetGeneratorTool: React.FC = () => {
 
 greet('World');`);
     const [language, setLanguage] = useState('typescript');
-    const [background, setBackground] = useState(BACKGROUNDS[6].value); // Default nice purple
+    const [background, setBackground] = useState(BACKGROUNDS[7].value); // Default to Aura 1
     const [customBg, setCustomBg] = useState<string | null>(null);
     const [windowControls, setWindowControls] = useState(true);
     const [darkMode, setDarkMode] = useState(true); // Inner window theme
-    const [padding, setPadding] = useState(64);
+    const [paddingX, setPaddingX] = useState(64);
+    const [paddingY, setPaddingY] = useState(64);
     const [title, setTitle] = useState('Untitled-1');
     const [showLineNumbers, setShowLineNumbers] = useState(true);
+    const [theme, setTheme] = useState<PrismThemeKey>('tomorrow');
+    
+    // Glassmorphism state
+    const [isGlass, setIsGlass] = useState(false);
+    const [glassBlur, setGlassBlur] = useState(16);
+    const [glassOpacity, setGlassOpacity] = useState(0.7);
 
     const exportRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -95,11 +102,12 @@ greet('World');`);
         if (!exportRef.current) return;
 
         try {
-            const dataUrl = await toPng(exportRef.current, { cacheBust: true, pixelRatio: 2 });
+            const dataUrl = await htmlToImage.toPng(exportRef.current, { cacheBust: true, pixelRatio: 2 });
             const link = document.createElement('a');
             link.download = `snippet-${new Date().getTime()}.png`;
             link.href = dataUrl;
             link.click();
+            // console.log("Download temporarily disabled for debugging");
         } catch (err) {
             console.error('Failed to generate image', err);
         }
@@ -132,6 +140,7 @@ greet('World');`);
 
     return (
         <div className="flex flex-col xl:flex-row gap-8 w-full max-w-none mx-auto min-h-[600px]">
+             <style dangerouslySetInnerHTML={{ __html: PRISM_THEMES[theme].css }} />
             {/* Controls Side */}
             <div className="xl:w-[350px] flex flex-col gap-6 order-2 xl:order-1 h-fit">
                 {/* Visual Settings */}
@@ -140,8 +149,23 @@ greet('World');`);
                         <Palette className="w-4 h-4" /> Appearance
                     </h3>
 
-                    <div className="space-y-3">
-                        <label className="text-sm font-medium text-text-main dark:text-gray-300">Language</label>
+                    <div className="space-y-4">
+                        <label className="block text-sm font-medium text-text-main dark:text-gray-300">Theme</label>
+                        <select
+                            value={theme}
+                            onChange={(e) => setTheme(e.target.value as PrismThemeKey)}
+                            className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1e1e1e] border border-gray-200 dark:border-white/10 outline-none focus:border-primary text-sm text-gray-900 dark:text-gray-100"
+                        >
+                            {Object.entries(PRISM_THEMES).map(([key, value]) => (
+                                <option key={key} value={key} className="bg-white dark:bg-[#1e1e1e] text-gray-900 dark:text-gray-100">
+                                    {value.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="space-y-5">
+                        <label className="block text-sm font-medium text-text-main dark:text-gray-300">Language</label>
                         <select
                             value={language}
                             onChange={(e) => setLanguage(e.target.value)}
@@ -155,8 +179,8 @@ greet('World');`);
                         </select>
                     </div>
 
-                    <div className="space-y-3">
-                        <label className="text-sm font-medium text-text-main dark:text-gray-300">Background</label>
+                    <div className="space-y-5">
+                        <label className="block text-sm font-medium text-text-main dark:text-gray-300">Background</label>
                         <div className="grid grid-cols-5 gap-3">
                             {BACKGROUNDS.map((bg) => {
                                 const isGradient = bg.value.includes('gradient');
@@ -207,25 +231,73 @@ greet('World');`);
                         </div>
                     </div>
 
-                    <div className="space-y-3">
-                        <label className="text-sm font-medium text-text-main dark:text-gray-300">Padding</label>
-                        <div className="flex bg-gray-50 dark:bg-white/5 rounded-lg p-1">
-                            {PADDINGS.map((p) => (
-                                <button
-                                    key={p}
-                                    onClick={() => setPadding(p)}
-                                    className={clsx(
-                                        "flex-1 py-1.5 text-xs font-medium rounded-md transition-colors",
-                                        padding === p ? "bg-white dark:bg-white/10 shadow text-primary" : "text-text-sub hover:text-text-main"
-                                    )}
-                                >
-                                    {p}px
-                                </button>
-                            ))}
+                    <div className="space-y-4">
+                        <label className="block text-sm font-medium text-text-main dark:text-gray-300">Padding</label>
+                        
+                        {/* Horizontal Padding (Width) */}
+                        <div className="space-y-2">
+                             <div className="flex justify-between text-xs text-text-sub">
+                                <span>Horizontal (Width)</span>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="128"
+                                    value={paddingX}
+                                    onChange={(e) => setPaddingX(Number(e.target.value))}
+                                    className="flex-1 accent-primary h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                                />
+                                <div className="relative w-20 shrink-0">
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="128"
+                                        value={paddingX}
+                                        onChange={(e) => {
+                                            const val = Math.min(Math.max(Number(e.target.value), 0), 128);
+                                            setPaddingX(val);
+                                        }}
+                                        className="w-full px-2 py-1.5 text-sm bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-md text-center focus:border-primary outline-none transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    />
+                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-text-sub pointer-events-none">px</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Vertical Padding (Height) */}
+                        <div className="space-y-2">
+                            <div className="flex justify-between text-xs text-text-sub">
+                                <span>Vertical (Height)</span>
+                            </div>
+                             <div className="flex items-center gap-4">
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="128"
+                                    value={paddingY}
+                                    onChange={(e) => setPaddingY(Number(e.target.value))}
+                                    className="flex-1 accent-primary h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                                />
+                                <div className="relative w-20 shrink-0">
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="128"
+                                        value={paddingY}
+                                        onChange={(e) => {
+                                            const val = Math.min(Math.max(Number(e.target.value), 0), 128);
+                                            setPaddingY(val);
+                                        }}
+                                        className="w-full px-2 py-1.5 text-sm bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-md text-center focus:border-primary outline-none transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    />
+                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-text-sub pointer-events-none">px</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-5">
                         <div className="flex items-center justify-between">
                             <label className="text-sm font-medium text-text-main dark:text-gray-300">Window Title</label>
                         </div>
@@ -235,6 +307,54 @@ greet('World');`);
                             onChange={(e) => setTitle(e.target.value)}
                             className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 outline-none focus:border-primary text-sm"
                         />
+                    </div>
+
+                    <div className="space-y-4 pt-2 border-t border-gray-100 dark:border-white/5">
+                        <label className="flex items-center justify-between cursor-pointer group">
+                             <span className="text-sm font-medium text-text-main dark:text-gray-300">Glassmorphism</span>
+                            <div className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={isGlass}
+                                    onChange={(e) => setIsGlass(e.target.checked)}
+                                    className="sr-only peer"
+                                />
+                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                            </div>
+                        </label>
+
+                        {isGlass && (
+                            <div className="space-y-4 pl-2 animate-in fade-in slide-in-from-top-2">
+                                <div className="space-y-2">
+                                    <div className="flex justify-between text-xs text-text-sub">
+                                        <span>Blur</span>
+                                        <span>{glassBlur}px</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="40"
+                                        value={glassBlur}
+                                        onChange={(e) => setGlassBlur(Number(e.target.value))}
+                                        className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 accent-primary"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="flex justify-between text-xs text-text-sub">
+                                        <span>Opacity</span>
+                                        <span>{Math.round(glassOpacity * 100)}%</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="100"
+                                        value={glassOpacity * 100}
+                                        onChange={(e) => setGlassOpacity(Number(e.target.value) / 100)}
+                                        className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 accent-primary"
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -246,34 +366,45 @@ greet('World');`);
 
                     <label className="flex items-center justify-between cursor-pointer group">
                         <span className="text-sm font-medium text-text-main dark:text-gray-300">Window Controls</span>
-                        <input
-                            type="checkbox"
-                            checked={windowControls}
-                            onChange={(e) => setWindowControls(e.target.checked)}
-                            className="w-5 h-5 accent-primary"
-                        />
+                        <div className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={windowControls}
+                                onChange={(e) => setWindowControls(e.target.checked)}
+                                className="sr-only peer"
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                        </div>
                     </label>
 
                     <label className="flex items-center justify-between cursor-pointer group">
                         <span className="text-sm font-medium text-text-main dark:text-gray-300">Line Numbers</span>
-                        <input
-                            type="checkbox"
-                            checked={showLineNumbers}
-                            onChange={(e) => setShowLineNumbers(e.target.checked)}
-                            className="w-5 h-5 accent-primary"
-                        />
+                         <div className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={showLineNumbers}
+                                onChange={(e) => setShowLineNumbers(e.target.checked)}
+                                className="sr-only peer"
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                        </div>
                     </label>
 
                     {/* Dark Mode toggle for the Code Window itself, unrelated to app theme */}
                     <label className="flex items-center justify-between cursor-pointer group">
                         <span className="text-sm font-medium text-text-main dark:text-gray-300">Dark Window</span>
-                        <input
-                            type="checkbox"
-                            checked={darkMode}
-                            onChange={(e) => setDarkMode(e.target.checked)}
-                            className="w-5 h-5 accent-primary"
-                        />
+                        <div className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={darkMode}
+                                onChange={(e) => setDarkMode(e.target.checked)}
+                                className="sr-only peer"
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                        </div>
                     </label>
+
+
                 </div>
 
                 <button
@@ -299,9 +430,9 @@ greet('World');`);
                         className="transition-all duration-300 ease-in-out box-content"
                         style={{
                             background: (background.includes('url') || background.startsWith('data:'))
-                                ? `url(${background}) center / 100% 100% no-repeat`
+                                ? `url(${background}) center / cover no-repeat`
                                 : background,
-                            padding: `${padding}px`,
+                            padding: `${paddingY}px ${paddingX}px`,
                             minWidth: '400px',
                             maxWidth: '100%'
                         }}
@@ -313,6 +444,16 @@ greet('World');`);
                                     ? "bg-[#2d2d2d] border-gray-700/50" // Match Prism Tomorrow bg
                                     : "bg-white border-gray-200"
                             )}
+                            style={isGlass ? {
+                                backgroundColor: darkMode 
+                                    ? `rgba(45, 45, 45, ${glassOpacity})` 
+                                    : `rgba(255, 255, 255, ${glassOpacity})`,
+                                backdropFilter: `blur(${glassBlur}px)`,
+                                WebkitBackdropFilter: `blur(${glassBlur}px)`,
+                                borderColor: darkMode
+                                    ? `rgba(255, 255, 255, 0.1)`
+                                    : `rgba(0, 0, 0, 0.1)`
+                            } : {}}
                         >
                             {/* Window Header */}
                             <div className={clsx(
