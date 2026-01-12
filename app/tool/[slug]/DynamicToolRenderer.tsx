@@ -51,6 +51,13 @@ export const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
     'fake-data': dynamic(() => import('@/components/FakeDataTool').then(m => ({ default: m.FakeDataTool })), { loading: () => <ToolSkeleton /> }),
     'color-palette': dynamic(() => import('@/components/ColorPaletteTool').then(m => ({ default: m.ColorPaletteTool })), { loading: () => <ToolSkeleton />, ssr: false }),
     'code-snippet': dynamic(() => import('@/components/CodeSnippetGeneratorTool').then(m => ({ default: m.CodeSnippetGeneratorTool })), { loading: () => <ToolSkeleton />, ssr: false }),
+    'sitemap-finder': dynamic(() => import('@/components/SitemapFinderTool').then(m => ({ default: m.SitemapFinderTool })), { loading: () => <ToolSkeleton /> }),
+    'sitemap-validator': dynamic(() => import('@/components/SitemapValidatorTool').then(m => ({ default: m.SitemapValidatorTool })), { loading: () => <ToolSkeleton /> }),
+    'sitemap-generator': dynamic(() => import('@/components/SitemapGeneratorTool').then(m => ({ default: m.SitemapGeneratorTool })), { loading: () => <ToolSkeleton /> }),
+    'sitemap-extractor': dynamic(() => import('@/components/SitemapExtractorTool').then(m => ({ default: m.SitemapExtractorTool })), { loading: () => <ToolSkeleton /> }),
+    'document-converter': dynamic(() => import('@/components/DocumentConverterTool').then(m => ({ default: m.DocumentConverterTool })), { loading: () => <ToolSkeleton /> }),
+    'robots': dynamic(() => import('@/components/RobotsTool').then(m => ({ default: m.RobotsTool })), { loading: () => <ToolSkeleton /> }),
+    'url-encoder': dynamic(() => import('@/components/UrlEncoderTool').then(m => ({ default: m.UrlEncoderTool })), { loading: () => <ToolSkeleton /> }),
 };
 
 interface DynamicToolRendererProps {

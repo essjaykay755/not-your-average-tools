@@ -128,7 +128,7 @@ export const CorsTool: React.FC = () => {
                 <div className="flex gap-2">
                     <div className="relative">
                         <select value={method} onChange={(e) => setMethod(e.target.value)}
-                            className={`appearance-none w-28 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-3 pr-8 font-bold text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 ${method === 'GET' ? 'text-green-600 dark:text-green-400' :
+                            className={`appearance-none w-28 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-3 pr-8 font-bold text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 dark:[color-scheme:dark] ${method === 'GET' ? 'text-green-600 dark:text-green-400' :
                                 method === 'POST' ? 'text-yellow-600 dark:text-yellow-400' :
                                     method === 'PUT' ? 'text-blue-600 dark:text-blue-400' :
                                         method === 'PATCH' ? 'text-orange-600 dark:text-orange-400' :

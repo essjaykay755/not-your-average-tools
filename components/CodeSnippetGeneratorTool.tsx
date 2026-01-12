@@ -43,13 +43,13 @@ const BACKGROUNDS = [
     { name: 'Sunset Drive', value: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
     { name: 'Northern Lights', value: 'linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%)' },
     { name: 'Passion', value: 'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)' },
-    
+
     // Complex Mesh / Aura
     { name: 'Aura 1', value: 'radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%)' },
     { name: 'Aura 2', value: 'radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0, transparent 50%), radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0, transparent 50%), radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0, transparent 50%)' },
     { name: 'Aura 3', value: 'radial-gradient(at 0% 100%, hsla(192,100%,50%,1) 0, transparent 50%), radial-gradient(at 100% 100%, hsla(280,100%,50%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(340,100%,70%,1) 0, transparent 50%)' },
     { name: 'Glassy', value: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0))' },
-    
+
     // Deep & Dark
     { name: 'Deep Space', value: 'linear-gradient(to bottom, #000000, #434343)' },
     { name: 'Midnight', value: 'linear-gradient(to right, #232526, #414345)' },
@@ -77,7 +77,7 @@ greet('World');`);
     const [title, setTitle] = useState('Untitled-1');
     const [showLineNumbers, setShowLineNumbers] = useState(true);
     const [theme, setTheme] = useState<PrismThemeKey>('tomorrow');
-    
+
     // Glassmorphism state
     const [isGlass, setIsGlass] = useState(false);
     const [glassBlur, setGlassBlur] = useState(16);
@@ -140,7 +140,7 @@ greet('World');`);
 
     return (
         <div className="flex flex-col xl:flex-row gap-8 w-full max-w-none mx-auto min-h-[600px]">
-             <style dangerouslySetInnerHTML={{ __html: PRISM_THEMES[theme].css }} />
+            <style dangerouslySetInnerHTML={{ __html: PRISM_THEMES[theme].css }} />
             {/* Controls Side */}
             <div className="xl:w-[350px] flex flex-col gap-6 order-2 xl:order-1 h-fit">
                 {/* Visual Settings */}
@@ -154,7 +154,7 @@ greet('World');`);
                         <select
                             value={theme}
                             onChange={(e) => setTheme(e.target.value as PrismThemeKey)}
-                            className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1e1e1e] border border-gray-200 dark:border-white/10 outline-none focus:border-primary text-sm text-gray-900 dark:text-gray-100"
+                            className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1e1e1e] border border-gray-200 dark:border-white/10 outline-none focus:border-primary text-sm text-gray-900 dark:text-gray-100 dark:[color-scheme:dark]"
                         >
                             {Object.entries(PRISM_THEMES).map(([key, value]) => (
                                 <option key={key} value={key} className="bg-white dark:bg-[#1e1e1e] text-gray-900 dark:text-gray-100">
@@ -169,7 +169,7 @@ greet('World');`);
                         <select
                             value={language}
                             onChange={(e) => setLanguage(e.target.value)}
-                            className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1e1e1e] border border-gray-200 dark:border-white/10 outline-none focus:border-primary text-sm text-gray-900 dark:text-gray-100"
+                            className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1e1e1e] border border-gray-200 dark:border-white/10 outline-none focus:border-primary text-sm text-gray-900 dark:text-gray-100 dark:[color-scheme:dark]"
                         >
                             {LANGUAGES.map((lang) => (
                                 <option key={lang.value} value={lang.value} className="bg-white dark:bg-[#1e1e1e] text-gray-900 dark:text-gray-100">
@@ -233,10 +233,10 @@ greet('World');`);
 
                     <div className="space-y-4">
                         <label className="block text-sm font-medium text-text-main dark:text-gray-300">Padding</label>
-                        
+
                         {/* Horizontal Padding (Width) */}
                         <div className="space-y-2">
-                             <div className="flex justify-between text-xs text-text-sub">
+                            <div className="flex justify-between text-xs text-text-sub">
                                 <span>Horizontal (Width)</span>
                             </div>
                             <div className="flex items-center gap-4">
@@ -270,7 +270,7 @@ greet('World');`);
                             <div className="flex justify-between text-xs text-text-sub">
                                 <span>Vertical (Height)</span>
                             </div>
-                             <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4">
                                 <input
                                     type="range"
                                     min="0"
@@ -311,7 +311,7 @@ greet('World');`);
 
                     <div className="space-y-4 pt-2 border-t border-gray-100 dark:border-white/5">
                         <label className="flex items-center justify-between cursor-pointer group">
-                             <span className="text-sm font-medium text-text-main dark:text-gray-300">Glassmorphism</span>
+                            <span className="text-sm font-medium text-text-main dark:text-gray-300">Glassmorphism</span>
                             <div className="relative inline-flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
@@ -379,7 +379,7 @@ greet('World');`);
 
                     <label className="flex items-center justify-between cursor-pointer group">
                         <span className="text-sm font-medium text-text-main dark:text-gray-300">Line Numbers</span>
-                         <div className="relative inline-flex items-center cursor-pointer">
+                        <div className="relative inline-flex items-center cursor-pointer">
                             <input
                                 type="checkbox"
                                 checked={showLineNumbers}
@@ -445,8 +445,8 @@ greet('World');`);
                                     : "bg-white border-gray-200"
                             )}
                             style={isGlass ? {
-                                backgroundColor: darkMode 
-                                    ? `rgba(45, 45, 45, ${glassOpacity})` 
+                                backgroundColor: darkMode
+                                    ? `rgba(45, 45, 45, ${glassOpacity})`
                                     : `rgba(255, 255, 255, ${glassOpacity})`,
                                 backdropFilter: `blur(${glassBlur}px)`,
                                 WebkitBackdropFilter: `blur(${glassBlur}px)`,

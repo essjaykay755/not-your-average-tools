@@ -36,6 +36,13 @@ import {
     Pipette,
     Download,
     Layout,
+    FileSearch,
+    MapPin,
+    ListChecks,
+    FileOutput,
+    FileType,
+    Bot,
+    Link,
 } from 'lucide-react';
 import { Tool } from '../types';
 
@@ -394,6 +401,69 @@ export const ALL_TOOLS: Tool[] = [
         path: '/tool/color-palette',
         category: 'Design',
         usage: 'Upload an image. The tool extracts dominant colors using K-means clustering. Click to copy, or export as CSS variables.'
+    },
+    {
+        id: 'sitemap-finder',
+        name: 'Sitemap Finder',
+        description: 'Discover sitemaps on any website by checking common locations and parsing robots.txt.',
+        icon: FileSearch,
+        path: '/tool/sitemap-finder',
+        category: 'Developer',
+        usage: 'Enter a domain. The tool checks common sitemap paths and parses robots.txt to find declared sitemaps.'
+    },
+    {
+        id: 'sitemap-validator',
+        name: 'Sitemap Validator',
+        description: 'Validate XML sitemaps against standards. Check for errors, warnings, and best practices.',
+        icon: ListChecks,
+        path: '/tool/sitemap-validator',
+        category: 'Developer',
+        usage: 'Paste sitemap XML or provide a URL. Get detailed validation with error highlighting and recommendations.'
+    },
+    {
+        id: 'sitemap-generator',
+        name: 'Sitemap Generator',
+        description: 'Create valid XML sitemaps with optional lastmod, changefreq, and priority attributes.',
+        icon: MapPin,
+        path: '/tool/sitemap-generator',
+        category: 'Developer',
+        usage: 'Add URLs one by one or bulk import. Configure optional attributes. Download ready-to-use sitemap.xml.'
+    },
+    {
+        id: 'sitemap-extractor',
+        name: 'Sitemap Extractor',
+        description: 'Extract all URLs from a sitemap with metadata. Export as plain text, CSV, or JSON.',
+        icon: FileOutput,
+        path: '/tool/sitemap-extractor',
+        category: 'Developer',
+        usage: 'Paste sitemap XML or fetch from URL. Filter results. Export all URLs in your preferred format.'
+    },
+    {
+        id: 'document-converter',
+        name: 'Document Converter',
+        description: 'Convert between JSON, CSV, XML, Markdown, HTML, YAML, and plain text formats. Client-side only.',
+        icon: FileType,
+        path: '/tool/document-converter',
+        category: 'Utility',
+        usage: 'Upload or paste content in one format. Select target format. Download the converted file instantly.'
+    },
+    {
+        id: 'robots',
+        name: 'Robots.txt Generator',
+        description: 'Create a perfect robots.txt file with sitemap directives, user-agent rules, and crawl settings.',
+        icon: Bot,
+        path: '/tool/robots',
+        category: 'Developer',
+        usage: 'Add your sitemap URL. Select which bots to allow. Choose paths to block. Download your robots.txt file.'
+    },
+    {
+        id: 'url-encoder',
+        name: 'URL Encoder / Decoder',
+        description: 'Encode and decode URLs, URL components, and Base64 strings. Essential for web development.',
+        icon: Link,
+        path: '/tool/url-encoder',
+        category: 'Developer',
+        usage: 'Enter text to encode or encoded text to decode. Switch between URL, URL Component, and Base64 modes.'
     }
 ];
 

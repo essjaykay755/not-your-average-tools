@@ -80,7 +80,7 @@ export const FakeDataTool: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
                     <div className="flex items-center gap-4">
                         <label className="text-sm font-medium text-text-main dark:text-white">Generate</label>
-                        <select value={count} onChange={(e) => setCount(Number(e.target.value))} className="px-4 py-2 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-text-main dark:text-white font-medium">
+                        <select value={count} onChange={(e) => setCount(Number(e.target.value))} className="px-4 py-2 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-text-main dark:text-white font-medium dark:[color-scheme:dark]">
                             {[1, 3, 5, 10, 25].map(n => <option key={n} value={n}>{n} {n === 1 ? 'person' : 'people'}</option>)}
                         </select>
                     </div>

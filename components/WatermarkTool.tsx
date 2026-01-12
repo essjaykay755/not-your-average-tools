@@ -453,7 +453,7 @@ export const WatermarkTool = () => {
                             <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label className="text-xs text-text-sub dark:text-gray-400 block mb-1">Format</label>
-                                    <select value={format} onChange={(e) => setFormat(e.target.value)} className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg p-2 text-sm text-text-main dark:text-white focus:outline-none focus:ring-2 ring-primary/20">
+                                    <select value={format} onChange={(e) => setFormat(e.target.value)} className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg p-2 text-sm text-text-main dark:text-white focus:outline-none focus:ring-2 ring-primary/20 dark:[color-scheme:dark]">
                                         <option value="image/png">PNG</option>
                                         <option value="image/jpeg">JPEG</option>
                                         <option value="image/webp">WebP</option>

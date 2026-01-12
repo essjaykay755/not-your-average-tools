@@ -124,8 +124,8 @@ ${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
                 <button
                     onClick={() => setActiveTab('basic')}
                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'basic'
-                            ? 'bg-white dark:bg-white/10 text-primary shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                        ? 'bg-white dark:bg-white/10 text-primary shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                         }`}
                 >
                     <Code2 className="w-4 h-4" /> Basic SEO
@@ -133,8 +133,8 @@ ${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
                 <button
                     onClick={() => setActiveTab('opengraph')}
                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'opengraph'
-                            ? 'bg-white dark:bg-white/10 text-primary shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                        ? 'bg-white dark:bg-white/10 text-primary shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                         }`}
                 >
                     <Globe className="w-4 h-4" /> Open Graph
@@ -142,8 +142,8 @@ ${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
                 <button
                     onClick={() => setActiveTab('twitter')}
                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'twitter'
-                            ? 'bg-white dark:bg-white/10 text-primary shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                        ? 'bg-white dark:bg-white/10 text-primary shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                         }`}
                 >
                     <Share2 className="w-4 h-4" /> Twitter
@@ -151,8 +151,8 @@ ${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
                 <button
                     onClick={() => setActiveTab('technical')}
                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'technical'
-                            ? 'bg-white dark:bg-white/10 text-primary shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                        ? 'bg-white dark:bg-white/10 text-primary shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                         }`}
                 >
                     ⚙️ Technical
@@ -224,7 +224,7 @@ ${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
                             <select
                                 value={metaData.ogType}
                                 onChange={(e) => setMetaData({ ...metaData, ogType: e.target.value })}
-                                className="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                className="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 dark:[color-scheme:dark]"
                             >
                                 <option value="website">Website</option>
                                 <option value="article">Article</option>
@@ -242,7 +242,7 @@ ${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
                             <select
                                 value={metaData.twitterCard}
                                 onChange={(e) => setMetaData({ ...metaData, twitterCard: e.target.value })}
-                                className="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                className="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 dark:[color-scheme:dark]"
                             >
                                 <option value="summary_large_image">Summary Large Image</option>
                                 <option value="summary">Summary</option>
@@ -282,7 +282,7 @@ ${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
                             <select
                                 value={metaData.robots}
                                 onChange={(e) => setMetaData({ ...metaData, robots: e.target.value })}
-                                className="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                className="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 dark:[color-scheme:dark]"
                             >
                                 <option value="index, follow">Index, Follow (Recommended)</option>
                                 <option value="index, nofollow">Index, No Follow</option>
