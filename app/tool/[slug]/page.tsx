@@ -74,6 +74,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
             description={tool.description}
             category={tool.category}
             usage={tool.usage}
+            noPadding={tool.noPadding}
         >
             <DynamicToolRenderer slug={slug} />
         </ToolPageClient>

@@ -15,6 +15,7 @@ export interface Tool {
     description: string;
     icon?: any;
   }[];
+  noPadding?: boolean;
 }
 
 export enum Theme {

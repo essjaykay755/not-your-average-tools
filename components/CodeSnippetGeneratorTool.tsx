@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-javascript';
@@ -15,11 +15,32 @@ import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-sql';
 import { PRISM_THEMES, PrismThemeKey } from '../data/prismThemes';
 import * as htmlToImage from 'html-to-image';
-import { Download, Copy, Moon, Sun, Monitor, Code2, Palette, Type, Layout, Image as ImageIcon } from 'lucide-react';
+import {
+    Download,
+    Plus,
+    Minus,
+    Square,
+    X,
+    Image as ImageIcon,
+    ChevronLeft,
+    ChevronRight,
+    Layout,
+    Type,
+    Check,
+    Palette,
+    Monitor,
+    Smartphone,
+    Tablet,
+    Projector,
+    Copy,
+    ZoomIn,
+    ZoomOut,
+    Maximize,
+} from 'lucide-react';
 import clsx from 'clsx';
+import { motion, AnimatePresence } from 'framer-motion';
 
-// If adding more themes, we'd need to dynamically load CSS or use a different approach.
-// For now, let's stick to a solid dark theme (tomorrow) which looks good for snippets.
+// --- DATA CONSTANTS ---
 
 const LANGUAGES = [
     { name: 'JavaScript', value: 'javascript' },
@@ -35,84 +56,75 @@ const LANGUAGES = [
 ];
 
 const BACKGROUNDS = [
-    // Trending Gradients
-    { name: 'Cotton Candy', value: 'linear-gradient(135deg, #E0C3FC 0%, #8EC5FC 100%)' },
-    { name: 'Paradise', value: 'linear-gradient(135deg, #96fbc4 0%, #f9f586 100%)' },
-    { name: 'Midnight City', value: 'linear-gradient(135deg, #1f4037 0%, #99f2c8 100%)' },
-    { name: 'Purple Love', value: 'linear-gradient(135deg, #cc2b5e 0%, #753a88 100%)' },
-    { name: 'Sunset Drive', value: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
-    { name: 'Northern Lights', value: 'linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%)' },
-    { name: 'Passion', value: 'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)' },
-
-    // Complex Mesh / Aura
-    { name: 'Aura 1', value: 'radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%)' },
-    { name: 'Aura 2', value: 'radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0, transparent 50%), radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0, transparent 50%), radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0, transparent 50%)' },
-    { name: 'Aura 3', value: 'radial-gradient(at 0% 100%, hsla(192,100%,50%,1) 0, transparent 50%), radial-gradient(at 100% 100%, hsla(280,100%,50%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(340,100%,70%,1) 0, transparent 50%)' },
-    { name: 'Glassy', value: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0))' },
-
-    // Deep & Dark
-    { name: 'Deep Space', value: 'linear-gradient(to bottom, #000000, #434343)' },
-    { name: 'Midnight', value: 'linear-gradient(to right, #232526, #414345)' },
-
-    // Solids
-    { name: 'Slate', value: '#1e293b' },
-    { name: 'Black', value: '#000000' },
-    { name: 'White', value: '#ffffff' },
-    { name: 'Transparent', value: 'transparent' },
+    { name: 'Cosmic', value: 'linear-gradient(135deg, #1e1b4b 0%, #3b0764 50%, #000000 100%)' }, // Deep Purple/Black
+    { name: 'Candy', value: 'linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #6366f1 100%)' }, // Pink/Purple/Indigo
+    { name: 'Ocean', value: 'linear-gradient(135deg, #164e63 0%, #1e3a8a 50%, #0f172a 100%)' }, // Cyan/Blue/Dark
+    { name: 'Sunset', value: 'linear-gradient(135deg, #f97316 0%, #db2777 50%, #7c3aed 100%)' }, // Orange/Pink/Purple
+    { name: 'Midnight', value: '#18181b' }, // Zinc 950
+    { name: 'Emerald', value: 'linear-gradient(135deg, #064e3b 0%, #115e59 50%, #022c22 100%)' }, // Green/Teal
+    { name: 'Aurora', value: 'linear-gradient(135deg, #86efac 0%, #3b82f6 50%, #9333ea 100%)' }, // Green/Blue/Purple
+    { name: 'Glassy', value: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' },
 ];
 
+const WINDOW_THEMES = [
+    { id: 'mac', label: 'MacOS', class: 'border border-white/10 bg-[#1e1e1e]', bg: '#1e1e1e' },
+    { id: 'win11', label: 'Win 11', class: 'border border-white/10 bg-[#1e1e1e]', bg: '#1e1e1e' },
+    { id: 'neon', label: 'Neon', class: 'border border-purple-500/50 bg-[#0a0a0a] shadow-[0_0_20px_-5px_rgba(168,85,247,0.3)]', bg: '#0a0a0a' },
+    { id: 'minimal', label: 'Minimal', class: 'border border-transparent bg-[#1e1e1e] shadow-xl', bg: '#1e1e1e' },
+];
+
+const ASPECT_RATIOS = [
+    { id: 'auto', label: 'Auto', w: 0, h: 0, icon: Layout },
+    { id: '16:9', label: '16:9', w: 1920, h: 1080, icon: Monitor },
+    { id: '4:3', label: '4:3', w: 1200, h: 900, icon: Tablet },
+    { id: '1:1', label: '1:1', w: 1080, h: 1080, icon: Square },
+    { id: '9:16', label: '9:16', w: 1080, h: 1920, icon: Smartphone },
+];
+
+// --- COMPONENTS ---
+
 export const CodeSnippetGeneratorTool: React.FC = () => {
+    // Content State
     const [code, setCode] = useState(`const greet = (name: string) => {
   console.log(\`Hello, \${name}!\`);
 };
 
 greet('World');`);
+    const [title, setTitle] = useState('index.ts');
     const [language, setLanguage] = useState('typescript');
-    const [background, setBackground] = useState(BACKGROUNDS[7].value); // Default to Aura 1
-    const [customBg, setCustomBg] = useState<string | null>(null);
-    const [windowControls, setWindowControls] = useState(true);
-    const [darkMode, setDarkMode] = useState(true); // Inner window theme
-    const [paddingX, setPaddingX] = useState(64);
-    const [paddingY, setPaddingY] = useState(64);
-    const [title, setTitle] = useState('Untitled-1');
-    const [showLineNumbers, setShowLineNumbers] = useState(true);
     const [theme, setTheme] = useState<PrismThemeKey>('tomorrow');
 
-    // Glassmorphism state
-    const [isGlass, setIsGlass] = useState(false);
+    // Appearance State
+    const [background, setBackground] = useState(BACKGROUNDS[0].value);
+    const [customBg, setCustomBg] = useState<string | null>(null);
+    const [windowThemeId, setWindowThemeId] = useState('mac');
+    const [snippetWidth, setSnippetWidth] = useState(600); // Inner window width
+    const [windowScale, setWindowScale] = useState(1); // Scale of inner window
+
+    // Glass
+    const [glassEnabled, setGlassEnabled] = useState(true);
     const [glassBlur, setGlassBlur] = useState(16);
-    const [glassOpacity, setGlassOpacity] = useState(0.7);
+    const [glassOpacity, setGlassOpacity] = useState(70);
+
+    // Layout
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [selectedAspectRatio, setSelectedAspectRatio] = useState(ASPECT_RATIOS[1]); // Default 16:9
+    const [canvasScale, setCanvasScale] = useState(0.6); // Viewport zoom
 
     const exportRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    const highlight = (code: string) => {
+    // Prism Highlighting
+    const highlight = useCallback((code: string) => {
         return Prism.highlight(
             code,
             Prism.languages[language] || Prism.languages.javascript,
             language
         );
-    };
+    }, [language]);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(code);
-    };
-
-    const handleDownload = async () => {
-        if (!exportRef.current) return;
-
-        try {
-            const dataUrl = await htmlToImage.toPng(exportRef.current, { cacheBust: true, pixelRatio: 2 });
-            const link = document.createElement('a');
-            link.download = `snippet-${new Date().getTime()}.png`;
-            link.href = dataUrl;
-            link.click();
-            // console.log("Download temporarily disabled for debugging");
-        } catch (err) {
-            console.error('Failed to generate image', err);
-        }
-    };
-
+    // Handle File Upload
     const handleCustomBgUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const reader = new FileReader();
@@ -126,399 +138,430 @@ greet('World');`);
         }
     };
 
-    // Helper to get line numbers
-    const LineNumbers = () => {
-        const lines = code.split('\n').length;
-        return (
-            <div className="absolute left-0 top-0 bottom-0 w-8 flex flex-col items-end text-[12px] pt-[20px] pr-2 select-none opacity-40 font-mono" style={{ lineHeight: '21px' }} aria-hidden="true">
-                {Array.from({ length: lines }).map((_, i) => (
-                    <span key={i}>{i + 1}</span>
-                ))}
-            </div>
-        );
+    // Auto-Fit Canvas Logic
+    const handleFitScreen = useCallback(() => {
+        if (!containerRef.current) return;
+        
+        const container = containerRef.current;
+        const availableW = container.clientWidth - 160; // Padding
+        const availableH = container.clientHeight - 160;
+
+        let targetW = 800; // Default auto
+        let targetH = 600;
+
+        if (selectedAspectRatio.id !== 'auto') {
+            targetW = selectedAspectRatio.w;
+            targetH = selectedAspectRatio.h;
+        } else if (exportRef.current) {
+            // Measure actual content if possible in auto mode
+            targetW = exportRef.current.clientWidth;
+            targetH = exportRef.current.clientHeight;
+        }
+
+        const scaleW = availableW / targetW;
+        const scaleH = availableH / targetH;
+
+        // Fit logic: min of scale ratios, capped typically at 1 (or allow slight zoom in for small screens)
+        // Default to showing full content comfortably
+        const newScale = Math.min(scaleW, scaleH);
+        
+        setCanvasScale(Math.max(0.1, Math.min(1, newScale)));
+    }, [selectedAspectRatio]);
+
+    // Initial fit
+    useEffect(() => {
+        const timer = setTimeout(handleFitScreen, 100);
+        return () => clearTimeout(timer);
+    }, [handleFitScreen]);
+
+    const handleDownload = async () => {
+        if (!exportRef.current) return;
+        try {
+            const dataUrl = await htmlToImage.toPng(exportRef.current, {
+                pixelRatio: 2,
+                cacheBust: true,
+                skipFonts: true,
+                // Force specific dimensions to match the aspect ratio presets (unless auto)
+                width: selectedAspectRatio.id !== 'auto' ? selectedAspectRatio.w : undefined,
+                height: selectedAspectRatio.id !== 'auto' ? selectedAspectRatio.h : undefined,
+            });
+            const link = document.createElement('a');
+            link.download = `snippet-${new Date().getTime()}.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error('Failed to export', err);
+        }
+    };
+
+    // Helper: Window Controls Render
+    const renderWindowControls = () => {
+        if (windowThemeId === 'mac') {
+            return (
+                <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
+                    <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
+                    <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
+                </div>
+            );
+        }
+        if (windowThemeId === 'win11') {
+            return (
+                <div className="flex gap-4 items-center px-1">
+                    <Minus size={10} className="text-gray-400" />
+                    <Square size={8} className="text-gray-400" />
+                    <X size={10} className="text-gray-400" />
+                </div>
+            );
+        }
+        if (windowThemeId === 'neon') {
+            return (
+                <div className="flex gap-2">
+                     <div className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                     <div className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.8)]" />
+                </div>
+            );
+        }
+        return null; // Minimal
     };
 
     return (
-        <div className="flex flex-col xl:flex-row gap-8 w-full max-w-none mx-auto min-h-[600px]">
+        <div className="flex h-[85vh] w-full overflow-hidden bg-transparent text-text-main dark:text-white font-sans transition-colors">
             <style dangerouslySetInnerHTML={{ __html: PRISM_THEMES[theme].css }} />
-            {/* Controls Side */}
-            <div className="xl:w-[350px] flex flex-col gap-6 order-2 xl:order-1 h-fit">
-                {/* Visual Settings */}
-                <div className="bg-white dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-white/10 shadow-sm p-5 space-y-6">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 flex items-center gap-2">
-                        <Palette className="w-4 h-4" /> Appearance
-                    </h3>
 
-                    <div className="space-y-4">
-                        <label className="block text-sm font-medium text-text-main dark:text-gray-300">Theme</label>
-                        <select
-                            value={theme}
-                            onChange={(e) => setTheme(e.target.value as PrismThemeKey)}
-                            className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1e1e1e] border border-gray-200 dark:border-white/10 outline-none focus:border-primary text-sm text-gray-900 dark:text-gray-100 dark:[color-scheme:dark]"
-                        >
-                            {Object.entries(PRISM_THEMES).map(([key, value]) => (
-                                <option key={key} value={key} className="bg-white dark:bg-[#1e1e1e] text-gray-900 dark:text-gray-100">
-                                    {value.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="space-y-5">
-                        <label className="block text-sm font-medium text-text-main dark:text-gray-300">Language</label>
-                        <select
-                            value={language}
-                            onChange={(e) => setLanguage(e.target.value)}
-                            className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#1e1e1e] border border-gray-200 dark:border-white/10 outline-none focus:border-primary text-sm text-gray-900 dark:text-gray-100 dark:[color-scheme:dark]"
-                        >
-                            {LANGUAGES.map((lang) => (
-                                <option key={lang.value} value={lang.value} className="bg-white dark:bg-[#1e1e1e] text-gray-900 dark:text-gray-100">
-                                    {lang.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="space-y-5">
-                        <label className="block text-sm font-medium text-text-main dark:text-gray-300">Background</label>
-                        <div className="grid grid-cols-5 gap-3">
-                            {BACKGROUNDS.map((bg) => {
-                                const isGradient = bg.value.includes('gradient');
-                                const style = isGradient
-                                    ? {
-                                        backgroundImage: bg.value,
-                                        backgroundSize: '100% 100%',
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundPosition: 'center',
-                                    }
-                                    : { backgroundColor: bg.value };
-
-                                return (
-                                    <button
-                                        key={bg.name}
-                                        onClick={() => { setBackground(bg.value); setCustomBg(null); }}
-                                        className={clsx(
-                                            "w-12 h-12 rounded-xl border-2 transition-all shadow-sm",
-                                            background === bg.value ? "border-primary scale-105" : "border-transparent ring-1 ring-black/5 hover:scale-105"
-                                        )}
-                                        style={style}
-                                        title={bg.name}
-                                    />
-                                );
-                            })}
-                            <button
-                                onClick={() => fileInputRef.current?.click()}
-                                className={clsx(
-                                    "w-12 h-12 rounded-xl border-2 transition-all flex items-center justify-center bg-gray-100 dark:bg-white/10",
-                                    customBg && background === customBg ? "border-primary scale-105" : "border-transparent border-dashed border-gray-400 hover:scale-105"
-                                )}
-                                title="Upload Custom"
-                                style={customBg ? { background: `url(${customBg}) center / 100% 100% no-repeat` } : {}}
-                            >
-                                {!customBg && <ImageIcon className="w-5 h-5 text-gray-400" />}
-                            </button>
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                className="hidden"
-                                accept="image/*"
-                                onChange={(e) => {
-                                    handleCustomBgUpload(e);
-                                    // Reset input so the same file can be selected again if needed
-                                    e.target.value = '';
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="space-y-4">
-                        <label className="block text-sm font-medium text-text-main dark:text-gray-300">Padding</label>
-
-                        {/* Horizontal Padding (Width) */}
-                        <div className="space-y-2">
-                            <div className="flex justify-between text-xs text-text-sub">
-                                <span>Horizontal (Width)</span>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="128"
-                                    value={paddingX}
-                                    onChange={(e) => setPaddingX(Number(e.target.value))}
-                                    className="flex-1 accent-primary h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                                />
-                                <div className="relative w-20 shrink-0">
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        max="128"
-                                        value={paddingX}
-                                        onChange={(e) => {
-                                            const val = Math.min(Math.max(Number(e.target.value), 0), 128);
-                                            setPaddingX(val);
-                                        }}
-                                        className="w-full px-2 py-1.5 text-sm bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-md text-center focus:border-primary outline-none transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    />
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-text-sub pointer-events-none">px</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Vertical Padding (Height) */}
-                        <div className="space-y-2">
-                            <div className="flex justify-between text-xs text-text-sub">
-                                <span>Vertical (Height)</span>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="128"
-                                    value={paddingY}
-                                    onChange={(e) => setPaddingY(Number(e.target.value))}
-                                    className="flex-1 accent-primary h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                                />
-                                <div className="relative w-20 shrink-0">
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        max="128"
-                                        value={paddingY}
-                                        onChange={(e) => {
-                                            const val = Math.min(Math.max(Number(e.target.value), 0), 128);
-                                            setPaddingY(val);
-                                        }}
-                                        className="w-full px-2 py-1.5 text-sm bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-md text-center focus:border-primary outline-none transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    />
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-text-sub pointer-events-none">px</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-5">
-                        <div className="flex items-center justify-between">
-                            <label className="text-sm font-medium text-text-main dark:text-gray-300">Window Title</label>
-                        </div>
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 outline-none focus:border-primary text-sm"
-                        />
-                    </div>
-
-                    <div className="space-y-4 pt-2 border-t border-gray-100 dark:border-white/5">
-                        <label className="flex items-center justify-between cursor-pointer group">
-                            <span className="text-sm font-medium text-text-main dark:text-gray-300">Glassmorphism</span>
-                            <div className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    checked={isGlass}
-                                    onChange={(e) => setIsGlass(e.target.checked)}
-                                    className="sr-only peer"
-                                />
-                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
-                            </div>
-                        </label>
-
-                        {isGlass && (
-                            <div className="space-y-4 pl-2 animate-in fade-in slide-in-from-top-2">
-                                <div className="space-y-2">
-                                    <div className="flex justify-between text-xs text-text-sub">
-                                        <span>Blur</span>
-                                        <span>{glassBlur}px</span>
-                                    </div>
-                                    <input
-                                        type="range"
-                                        min="0"
-                                        max="40"
-                                        value={glassBlur}
-                                        onChange={(e) => setGlassBlur(Number(e.target.value))}
-                                        className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 accent-primary"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <div className="flex justify-between text-xs text-text-sub">
-                                        <span>Opacity</span>
-                                        <span>{Math.round(glassOpacity * 100)}%</span>
-                                    </div>
-                                    <input
-                                        type="range"
-                                        min="0"
-                                        max="100"
-                                        value={glassOpacity * 100}
-                                        onChange={(e) => setGlassOpacity(Number(e.target.value) / 100)}
-                                        className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 accent-primary"
-                                    />
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {/* Toggles */}
-                <div className="bg-white dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-white/10 shadow-sm p-5 space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 flex items-center gap-2">
-                        <Layout className="w-4 h-4" /> Components
-                    </h3>
-
-                    <label className="flex items-center justify-between cursor-pointer group">
-                        <span className="text-sm font-medium text-text-main dark:text-gray-300">Window Controls</span>
-                        <div className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={windowControls}
-                                onChange={(e) => setWindowControls(e.target.checked)}
-                                className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
-                        </div>
-                    </label>
-
-                    <label className="flex items-center justify-between cursor-pointer group">
-                        <span className="text-sm font-medium text-text-main dark:text-gray-300">Line Numbers</span>
-                        <div className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={showLineNumbers}
-                                onChange={(e) => setShowLineNumbers(e.target.checked)}
-                                className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
-                        </div>
-                    </label>
-
-                    {/* Dark Mode toggle for the Code Window itself, unrelated to app theme */}
-                    <label className="flex items-center justify-between cursor-pointer group">
-                        <span className="text-sm font-medium text-text-main dark:text-gray-300">Dark Window</span>
-                        <div className="relative inline-flex items-center cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={darkMode}
-                                onChange={(e) => setDarkMode(e.target.checked)}
-                                className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
-                        </div>
-                    </label>
-
-
-                </div>
-
-                <button
-                    onClick={handleDownload}
-                    className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-gradient-to-r from-primary to-primary/80 text-white font-bold hover:shadow-lg hover:shadow-primary/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-                >
-                    <Download className="w-5 h-5" />
-                    Download PNG
-                </button>
-            </div>
-
-            {/* Preview Area */}
-            <div className="flex-1 overflow-hidden flex flex-col">
-                <div className="flex-1 bg-gray-100 dark:bg-[#0a0a0a] rounded-2xl border border-gray-200 dark:border-white/5 p-4 md:p-8 overflow-auto flex items-center justify-center relative min-h-[500px]">
-                    {/* Grid Pattern */}
-                    <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none"
-                        style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '16px 16px' }}>
-                    </div>
-
-                    {/* The Export Container */}
-                    <div
-                        ref={exportRef}
-                        className="transition-all duration-300 ease-in-out box-content"
-                        style={{
-                            background: (background.includes('url') || background.startsWith('data:'))
-                                ? `url(${background}) center / cover no-repeat`
-                                : background,
-                            padding: `${paddingY}px ${paddingX}px`,
-                            minWidth: '400px',
-                            maxWidth: '100%'
-                        }}
+            {/* --- SIDEBAR --- */}
+            <AnimatePresence mode="wait">
+                {sidebarOpen && (
+                    <motion.div
+                        initial={{ x: -320, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: -320, opacity: 0 }}
+                        className="w-[360px] h-full flex flex-col border-r border-gray-200 dark:border-white/10 bg-white dark:bg-[#171717] z-40 shrink-0 shadow-xl relative"
                     >
-                        <div
-                            className={clsx(
-                                "rounded-xl shadow-2xl overflow-hidden transition-colors border",
-                                darkMode
-                                    ? "bg-[#2d2d2d] border-gray-700/50" // Match Prism Tomorrow bg
-                                    : "bg-white border-gray-200"
-                            )}
-                            style={isGlass ? {
-                                backgroundColor: darkMode
-                                    ? `rgba(45, 45, 45, ${glassOpacity})`
-                                    : `rgba(255, 255, 255, ${glassOpacity})`,
-                                backdropFilter: `blur(${glassBlur}px)`,
-                                WebkitBackdropFilter: `blur(${glassBlur}px)`,
-                                borderColor: darkMode
-                                    ? `rgba(255, 255, 255, 0.1)`
-                                    : `rgba(0, 0, 0, 0.1)`
-                            } : {}}
-                        >
-                            {/* Window Header */}
-                            <div className={clsx(
-                                "flex items-center px-4 py-3 border-b",
-                                darkMode ? "border-white/5 bg-white/5" : "border-gray-100 bg-gray-50"
-                            )}>
-                                <div className="flex gap-2 w-[60px]">
-                                    {windowControls && (
-                                        <>
-                                            <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                                            <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                                            <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
-                                        </>
-                                    )}
+                        {/* Sidebar Header */}
+                        <div className="p-5 border-b border-gray-200 dark:border-white/5 flex items-center justify-between">
+                            <h2 className="font-bold text-lg text-text-main dark:text-white">
+                                Options
+                            </h2>
+                            <button onClick={() => setSidebarOpen(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-white/5 rounded text-text-sub dark:text-gray-500 transition-colors">
+                                <ChevronLeft size={18} />
+                            </button>
+                        </div>
+
+                        {/* Sidebar Content */}
+                        <div className="flex-1 overflow-y-auto p-5 space-y-6 scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
+
+                             {/* FILE DETAILS */}
+                             <div className="space-y-4 pt-1">
+                                <label className="text-xs font-bold text-text-sub dark:text-gray-500 uppercase tracking-wider">Snippet Details</label>
+                                <div className="grid grid-cols-1 gap-3">
+                                    <input 
+                                        type="text" 
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-main dark:text-gray-200 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600"
+                                        placeholder="File Title (e.g. index.ts)"
+                                    />
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <select
+                                            value={language}
+                                            onChange={(e) => setLanguage(e.target.value)}
+                                            className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-main dark:text-gray-200 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
+                                        >
+                                            {LANGUAGES.map(l => <option key={l.value} value={l.value}>{l.name}</option>)}
+                                        </select>
+                                        <select
+                                            value={theme}
+                                            onChange={(e) => setTheme(e.target.value as PrismThemeKey)}
+                                            className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-main dark:text-gray-200 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
+                                        >
+                                            {Object.entries(PRISM_THEMES).map(([k, v]) => (
+                                                <option key={k} value={k}>{v.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
                                 </div>
-                                <div className={clsx(
-                                    "flex-1 text-center text-xs font-medium font-mono opacity-60 truncate px-4",
-                                    darkMode ? "text-white" : "text-gray-600"
-                                )}>
-                                    {title}
-                                </div>
-                                <div className="w-[60px]" /> {/* Spacer */}
                             </div>
 
-                            {/* Code Editor Area */}
-                            <div className={clsx(
-                                "relative overflow-hidden font-mono text-[14px]",
-                                darkMode ? "text-gray-200" : "text-gray-800"
-                            )}>
-                                {/* Editor takes up space, and we style it to look good */}
-                                <div className="relative pl-1">
-                                    {showLineNumbers && <LineNumbers />}
+                            <hr className="border-gray-200 dark:border-white/5" />
+                            
+                            {/* Aspect Ratio */}
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-text-sub dark:text-gray-500 uppercase tracking-wider">Canvas Size</label>
+                                <div className="grid grid-cols-3 gap-2">
+                                    {ASPECT_RATIOS.map(ratio => (
+                                        <button
+                                            key={ratio.id}
+                                            onClick={() => setSelectedAspectRatio(ratio)}
+                                            className={clsx(
+                                                "flex flex-col items-center justify-center p-2 rounded-lg border transition-all gap-1",
+                                                selectedAspectRatio.id === ratio.id 
+                                                    ? "bg-primary/5 border-primary text-primary" 
+                                                    : "bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/5 text-text-sub dark:text-gray-500 hover:border-gray-300 dark:hover:border-white/10 hover:text-text-main dark:hover:text-gray-300"
+                                            )}
+                                        >
+                                            <ratio.icon size={16} />
+                                            <span className="text-[10px]">{ratio.label}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Window Props */}
+                            <div className="space-y-4">
+                                <label className="text-xs font-bold text-text-sub dark:text-gray-500 uppercase tracking-wider">Window Settings</label>
+                                
+                                {/* Width Slider */}
+                                <div className="space-y-1">
+                                     <div className="flex justify-between text-xs text-text-sub dark:text-gray-400">
+                                        <span>Width</span>
+                                        <span>{snippetWidth}px</span>
+                                     </div>
+                                     <input 
+                                        type="range" min="300" max="1000" value={snippetWidth}
+                                        onChange={(e) => setSnippetWidth(Number(e.target.value))}
+                                        className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                                     />
+                                </div>
+
+                                {/* Scale Slider */}
+                                <div className="space-y-1">
+                                     <div className="flex justify-between text-xs text-text-sub dark:text-gray-400">
+                                        <span>Scale</span>
+                                        <span>{Math.round(windowScale * 100)}%</span>
+                                     </div>
+                                     <input 
+                                        type="range" min="50" max="500" value={windowScale * 100}
+                                        onChange={(e) => setWindowScale(Number(e.target.value) / 100)}
+                                        className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                                     />
+                                </div>
+
+                                {/* Style Buttons */}
+                                <div className="grid grid-cols-2 gap-2 mt-2">
+                                    {WINDOW_THEMES.map(t => (
+                                        <button
+                                            key={t.id}
+                                            onClick={() => setWindowThemeId(t.id)}
+                                            className={clsx(
+                                                "px-3 py-2 text-xs font-medium rounded-lg border transition-all",
+                                                windowThemeId === t.id 
+                                                    ? "bg-white dark:bg-white/10 border-text-main dark:border-white text-text-main dark:text-white" 
+                                                    : "bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/5 text-text-sub dark:text-gray-500 hover:text-text-main dark:hover:text-gray-300"
+                                            )}
+                                        >
+                                            {t.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Glassmorphism */}
+                            <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/5 space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs font-bold text-text-sub dark:text-gray-400 uppercase tracking-wider">Glass Effect</span>
+                                    <button 
+                                        onClick={() => setGlassEnabled(!glassEnabled)}
+                                        className={clsx(
+                                            "w-10 h-5 rounded-full relative transition-colors focus:ring-2 focus:ring-primary/50 focus:outline-none",
+                                            glassEnabled ? "bg-primary" : "bg-gray-300 dark:bg-gray-700"
+                                        )}
+                                    >
+                                        <div className={clsx("absolute top-1 w-3 h-3 bg-white rounded-full transition-all shadow-sm", glassEnabled ? "left-6" : "left-1")} />
+                                    </button>
+                                </div>
+                                {glassEnabled && (
+                                    <div className="space-y-3">
+                                         <div className="space-y-1">
+                                            <div className="flex justify-between text-[10px] text-text-sub dark:text-gray-500">
+                                                <span>Blur</span>
+                                                <span>{glassBlur}px</span>
+                                            </div>
+                                            <input type="range" min="0" max="40" value={glassBlur} onChange={e => setGlassBlur(Number(e.target.value))} className="w-full h-1 bg-gray-200 dark:bg-gray-700 accent-primary rounded-lg appearance-none cursor-pointer" />
+                                         </div>
+                                         <div className="space-y-1">
+                                            <div className="flex justify-between text-[10px] text-text-sub dark:text-gray-500">
+                                                <span>Opacity</span>
+                                                <span>{glassOpacity}%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value={glassOpacity} onChange={e => setGlassOpacity(Number(e.target.value))} className="w-full h-1 bg-gray-200 dark:bg-gray-700 accent-primary rounded-lg appearance-none cursor-pointer" />
+                                         </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Backgrounds */}
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-text-sub dark:text-gray-500 uppercase tracking-wider">Background</label>
+                                <div className="grid grid-cols-4 gap-2">
+                                    {BACKGROUNDS.map(bg => (
+                                        <button
+                                            key={bg.name}
+                                            onClick={() => setBackground(bg.value)}
+                                            className={clsx(
+                                                "aspect-square rounded-lg border-2 transition-all",
+                                                background === bg.value ? "border-white dark:border-white scale-105 shadow-lg" : "border-transparent opacity-70 hover:opacity-100"
+                                            )}
+                                            style={{ background: bg.value }}
+                                            title={bg.name}
+                                        />
+                                    ))}
+                                    <button 
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className={clsx(
+                                            "aspect-square rounded-lg border-2 border-dashed flex items-center justify-center transition-all bg-gray-50 dark:bg-white/5",
+                                            customBg && background === customBg ? "border-primary text-primary" : "border-gray-200 dark:border-white/10 text-text-sub dark:text-gray-600 hover:text-text-main dark:hover:text-gray-400"
+                                        )}
+                                    >
+                                        <ImageIcon size={16} />
+                                    </button>
+                                </div>
+                                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleCustomBgUpload} />
+                            </div>
+
+                        </div>
+
+                        {/* Footer Action */}
+                        <div className="p-5 border-t border-gray-200 dark:border-white/10 shrink-0">
+                            <button
+                                onClick={handleDownload}
+                                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-hover transition-all active:scale-95 shadow-lg shadow-primary/20"
+                            >
+                                <Download size={18} />
+                                Export PNG
+                            </button>
+                        </div>
+
+                        {/* Attached Toggle Button (Visible when open) */}
+                        <button
+                            onClick={() => setSidebarOpen(false)}
+                            className="absolute top-1/2 -right-5 transform -translate-y-1/2 z-50 w-5 h-12 bg-white dark:bg-[#171717] border border-l-0 border-gray-200 dark:border-white/10 rounded-r-lg flex items-center justify-center text-text-sub dark:text-gray-500 hover:text-text-main dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer shadow-md"
+                            title="Collapse Sidebar"
+                        >
+                            <ChevronLeft size={14} />
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Detached Toggle Button (Visible when closed) */}
+            <AnimatePresence>
+                {!sidebarOpen && (
+                    <motion.button
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: -20, opacity: 0 }}
+                        onClick={() => setSidebarOpen(true)}
+                        className="absolute top-1/2 left-0 z-50 w-5 h-12 bg-white dark:bg-[#171717] border border-l-0 border-gray-200 dark:border-white/10 rounded-r-lg flex items-center justify-center text-text-sub dark:text-gray-500 hover:text-text-main dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer shadow-md -translate-y-1/2"
+                        title="Expand Sidebar"
+                    >
+                        <ChevronRight size={14} />
+                    </motion.button>
+                )}
+            </AnimatePresence>
+
+
+            {/* --- PREVIEW AREA --- */}
+            <div className="flex-1 relative overflow-auto flex items-center justify-center bg-transparent transition-colors">
+                {/* Dotted Grid Background */}
+                <div 
+                    className="absolute inset-0 opacity-[0.2] pointer-events-none dark:invert"
+                    style={{ backgroundImage: 'radial-gradient(#888 1px, transparent 1px)', backgroundSize: '24px 24px' }} 
+                />
+
+                {/* ZOOM Controls for Preview */}
+                <div className="absolute top-6 right-6 flex items-center gap-2 z-30 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-white/10 p-1.5 rounded-lg shadow-xl shadow-black/5">
+                    <button onClick={() => setCanvasScale(Math.max(0.1, canvasScale - 0.1))} className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/5 rounded text-text-sub dark:text-gray-500 hover:text-text-main dark:hover:text-white transition-colors" title="Zoom Out">
+                        <ZoomOut size={16} />
+                    </button>
+                    <span className="text-xs font-mono w-12 text-center text-text-sub dark:text-gray-400 select-none">
+                        {Math.round(canvasScale * 100)}%
+                    </span>
+                    <button onClick={() => setCanvasScale(Math.min(3, canvasScale + 0.1))} className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/5 rounded text-text-sub dark:text-gray-500 hover:text-text-main dark:hover:text-white transition-colors" title="Zoom In">
+                        <ZoomIn size={16} />
+                    </button>
+                    <div className="w-[1px] h-4 bg-gray-200 dark:bg-white/10 mx-1" />
+                    <button onClick={handleFitScreen} className="p-1.5 hover:bg-gray-100 dark:hover:bg-white/5 rounded text-text-sub dark:text-gray-500 hover:text-text-main dark:hover:text-white transition-colors" title="Fit to Screen">
+                        <Maximize size={16} />
+                    </button>
+                </div>
+
+                {/* Canvas Scroll Wrapper */}
+                <div ref={containerRef} className="w-full h-full overflow-hidden flex items-center justify-center relative">
+                    <div 
+                        className="transition-transform duration-200 ease-out origin-center"
+                        style={{ transform: `scale(${canvasScale})` }}
+                    >
+                        {/* THE EXPORTABLE CONTAINER */}
+                        <div
+                            ref={exportRef}
+                            className={clsx(
+                                "relative overflow-hidden shadow-2xl flex items-center justify-center transition-all duration-300",
+                                selectedAspectRatio.id === 'auto' ? "min-w-[800px] min-h-[600px] rounded-xl" : ""
+                            )}
+                            style={{
+                                width: selectedAspectRatio.id !== 'auto' ? selectedAspectRatio.w : undefined,
+                                height: selectedAspectRatio.id !== 'auto' ? selectedAspectRatio.h : undefined,
+                                background: background.includes('gradient') || background.includes('#') ? background : `url(${background}) center/cover no-repeat`,
+                            }}
+                        >
+                            {/* Inner Code Window */}
+                            <div
+                                className={clsx(
+                                    "relative transition-all duration-300 rounded-xl overflow-hidden",
+                                    WINDOW_THEMES.find(t => t.id === windowThemeId)?.class
+                                )}
+                                style={{
+                                    width: `${snippetWidth}px`,
+                                    transform: `scale(${windowScale})`,
+                                    // Glassmorphism logic
+                                    backgroundColor: glassEnabled 
+                                        ? `rgba(${windowThemeId === 'neon' ? '10,10,10' : '30,30,30'}, ${glassOpacity / 100})` 
+                                        : (WINDOW_THEMES.find(t => t.id === windowThemeId)?.bg || '#1e1e1e'),
+                                    backdropFilter: glassEnabled ? `blur(${glassBlur}px)` : 'none',
+                                }}
+                            >
+                                {/* Window Header */}
+                                {windowThemeId !== 'minimal' && (
+                                    <div className={clsx(
+                                        "px-4 py-3 flex items-center justify-between border-b transition-colors",
+                                        windowThemeId === 'ubuntu' ? "bg-[#333] border-black/10" : "bg-white/5 border-white/5"
+                                    )}>
+                                        <div className="flex-1 flex justify-start">{windowThemeId !== 'win11' && renderWindowControls()}</div>
+                                        <div className={clsx("text-xs font-medium opacity-60 truncate px-2", windowThemeId==='neon' ? "text-purple-300" : "text-gray-400")}>
+                                            {title}
+                                        </div>
+                                        <div className="flex-1 flex justify-end">{windowThemeId === 'win11' && renderWindowControls()}</div>
+                                    </div>
+                                )}
+
+                                {/* Editor Content Render */}
+                                <div className="p-0 relative">
                                     <Editor
                                         value={code}
                                         onValueChange={setCode}
                                         highlight={highlight}
-                                        padding={20}
+                                        padding={24}
                                         style={{
                                             fontFamily: '"Fira Code", "Fira Mono", monospace',
                                             fontSize: 14,
-                                            lineHeight: '21px',
                                             backgroundColor: 'transparent',
-                                            minHeight: '100px',
-                                            marginLeft: showLineNumbers ? '24px' : '0',
                                         }}
                                         className={clsx(
-                                            "min-w-full",
-                                            // Prism theme overrides could go here if we weren't using the CSS file
+                                            "min-h-[100px] cursor-text",
+                                            windowThemeId === 'neon' ? "text-purple-50 drop-shadow-[0_0_2px_rgba(255,255,255,0.3)]" : "text-gray-200"
                                         )}
                                         textareaClassName="focus:outline-none"
                                     />
                                 </div>
-                                {/* Watermark */}
-                                <div className={clsx(
-                                    "absolute bottom-2 right-4 text-[10px] font-bold tracking-widest opacity-30 select-none pointer-events-none",
-                                    darkMode ? "text-white" : "text-black"
-                                )}>
+                                
+                                {/* Branding / Watermark */}
+                                <div className="absolute bottom-2 right-4 pointer-events-none opacity-30 text-[10px] font-bold tracking-widest text-white/50">
                                     NotYourAverage.Tools
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="text-center mt-4 text-xs text-text-sub">
-                    Preview may differ slightly from export.
                 </div>
             </div>
         </div>
