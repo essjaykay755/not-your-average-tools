@@ -391,7 +391,8 @@ export const ALL_TOOLS: Tool[] = [
                 description: 'Download a high-quality 2x pixel ratio PNG, perfect for sharing on Twitter or LinkedIn.',
                 icon: Download
             }
-        ]
+        ],
+        noPadding: true
     },
     {
         id: 'color-palette',

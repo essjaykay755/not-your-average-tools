@@ -11,6 +11,7 @@ interface ToolPageClientProps {
     description: string;
     category: string;
     usage: string;
+    noPadding?: boolean;
     children: React.ReactNode;
 }
 
@@ -23,7 +24,7 @@ const parseUsageSteps = (usage: string) => {
     }));
 };
 
-export function ToolPageClient({ slug, name, description, category, usage, children }: ToolPageClientProps) {
+export function ToolPageClient({ slug, name, description, category, usage, noPadding = false, children }: ToolPageClientProps) {
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
@@ -107,7 +108,7 @@ export function ToolPageClient({ slug, name, description, category, usage, child
                 </div>
 
                 {/* Tool Functionality Area (Integrated) */}
-                <div className="relative z-10 p-4 pt-4 md:px-8 md:py-6 lg:px-10 lg:py-8">
+                <div className={`relative z-10 ${noPadding ? 'p-0' : 'p-4 pt-4 md:px-8 md:py-6 lg:px-10 lg:py-8'}`}>
                     {children}
                 </div>
             </div>
