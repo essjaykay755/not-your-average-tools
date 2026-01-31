@@ -111,6 +111,7 @@ greet('World');`);
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [selectedAspectRatio, setSelectedAspectRatio] = useState(ASPECT_RATIOS[0]); // Default Auto
     const [canvasScale, setCanvasScale] = useState(0.6); // Viewport zoom
+    const [exportScale, setExportScale] = useState(2); // Export pixel ratio (1x to 4x)
 
     const exportRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -179,7 +180,7 @@ greet('World');`);
         if (!exportRef.current) return;
         try {
             const dataUrl = await htmlToImage.toPng(exportRef.current, {
-                pixelRatio: 2,
+                pixelRatio: exportScale,
                 cacheBust: true,
                 skipFonts: true,
                 // Force specific dimensions to match the aspect ratio presets (unless auto)
@@ -445,7 +446,29 @@ greet('World');`);
                         </div>
 
                         {/* Footer Action */}
-                        <div className="p-5 border-t border-gray-200 dark:border-white/10 shrink-0">
+                        <div className="p-5 border-t border-gray-200 dark:border-white/10 shrink-0 space-y-4">
+                            {/* Export Resolution Slider */}
+                            <div className="space-y-1">
+                                <div className="flex justify-between text-xs text-text-sub dark:text-gray-400">
+                                    <span>Export Resolution</span>
+                                    <span>{exportScale}x</span>
+                                </div>
+                                <input
+                                    type="range" min="1" max="4" step="0.5" value={exportScale}
+                                    onChange={(e) => setExportScale(Number(e.target.value))}
+                                    className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
+                                />
+                                <div className="flex justify-between text-[10px] text-text-sub dark:text-gray-500">
+                                    <span>1x</span>
+                                    <span className="text-primary font-medium">
+                                        {selectedAspectRatio.id !== 'auto'
+                                            ? `${Math.round(selectedAspectRatio.w * exportScale)} × ${Math.round(selectedAspectRatio.h * exportScale)}px`
+                                            : `~${Math.round(800 * exportScale)} × ${Math.round(600 * exportScale)}px`
+                                        }
+                                    </span>
+                                    <span>4x</span>
+                                </div>
+                            </div>
                             <button
                                 onClick={handleDownload}
                                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-hover transition-all active:scale-95 shadow-lg shadow-primary/20"
