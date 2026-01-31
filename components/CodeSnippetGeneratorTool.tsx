@@ -100,6 +100,7 @@ greet('World');`);
     const [windowThemeId, setWindowThemeId] = useState('mac');
     const [snippetWidth, setSnippetWidth] = useState(600); // Inner window width
     const [windowScale, setWindowScale] = useState(1); // Scale of inner window
+    const [watermarkText, setWatermarkText] = useState('NotYourAverage.Tools');
 
     // Glass
     const [glassEnabled, setGlassEnabled] = useState(true);
@@ -141,7 +142,7 @@ greet('World');`);
     // Auto-Fit Canvas Logic
     const handleFitScreen = useCallback(() => {
         if (!containerRef.current) return;
-        
+
         const container = containerRef.current;
         const availableW = container.clientWidth - 160; // Padding
         const availableH = container.clientHeight - 160;
@@ -164,7 +165,7 @@ greet('World');`);
         // Fit logic: min of scale ratios, capped typically at 1 (or allow slight zoom in for small screens)
         // Default to showing full content comfortably
         const newScale = Math.min(scaleW, scaleH);
-        
+
         setCanvasScale(Math.max(0.1, Math.min(1, newScale)));
     }, [selectedAspectRatio]);
 
@@ -225,8 +226,8 @@ greet('World');`);
         if (windowThemeId === 'neon') {
             return (
                 <div className="flex gap-2">
-                     <div className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
-                     <div className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.8)]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.8)]" />
                 </div>
             );
         }
@@ -234,7 +235,7 @@ greet('World');`);
     };
 
     return (
-        <div className="flex h-[85vh] w-full overflow-hidden bg-transparent text-text-main dark:text-white font-sans transition-colors">
+        <div className="flex h-[95vh] min-h-[800px] w-full overflow-hidden bg-transparent text-text-main dark:text-white font-sans transition-colors">
             <style dangerouslySetInnerHTML={{ __html: PRISM_THEMES[theme].css }} />
 
             {/* --- SIDEBAR --- */}
@@ -259,12 +260,12 @@ greet('World');`);
                         {/* Sidebar Content */}
                         <div className="flex-1 overflow-y-auto p-5 space-y-6 scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
 
-                             {/* FILE DETAILS */}
-                             <div className="space-y-4 pt-1">
+                            {/* FILE DETAILS */}
+                            <div className="space-y-4 pt-1">
                                 <label className="text-xs font-bold text-text-sub dark:text-gray-500 uppercase tracking-wider">Snippet Details</label>
                                 <div className="grid grid-cols-1 gap-3">
-                                    <input 
-                                        type="text" 
+                                    <input
+                                        type="text"
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
                                         className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-main dark:text-gray-200 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600"
@@ -274,17 +275,17 @@ greet('World');`);
                                         <select
                                             value={language}
                                             onChange={(e) => setLanguage(e.target.value)}
-                                            className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-main dark:text-gray-200 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
+                                            className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-main dark:text-gray-200 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all [&>option]:bg-white [&>option]:text-black dark:[&>option]:bg-[#171717] dark:[&>option]:text-white"
                                         >
-                                            {LANGUAGES.map(l => <option key={l.value} value={l.value}>{l.name}</option>)}
+                                            {LANGUAGES.map(l => <option key={l.value} value={l.value} className="bg-white text-black dark:bg-[#171717] dark:text-white">{l.name}</option>)}
                                         </select>
                                         <select
                                             value={theme}
                                             onChange={(e) => setTheme(e.target.value as PrismThemeKey)}
-                                            className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-main dark:text-gray-200 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
+                                            className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-main dark:text-gray-200 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all [&>option]:bg-white [&>option]:text-black dark:[&>option]:bg-[#171717] dark:[&>option]:text-white"
                                         >
                                             {Object.entries(PRISM_THEMES).map(([k, v]) => (
-                                                <option key={k} value={k}>{v.name}</option>
+                                                <option key={k} value={k} className="bg-white text-black dark:bg-[#171717] dark:text-white">{v.name}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -292,7 +293,7 @@ greet('World');`);
                             </div>
 
                             <hr className="border-gray-200 dark:border-white/5" />
-                            
+
                             {/* Aspect Ratio */}
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-text-sub dark:text-gray-500 uppercase tracking-wider">Canvas Size</label>
@@ -303,8 +304,8 @@ greet('World');`);
                                             onClick={() => setSelectedAspectRatio(ratio)}
                                             className={clsx(
                                                 "flex flex-col items-center justify-center p-2 rounded-lg border transition-all gap-1",
-                                                selectedAspectRatio.id === ratio.id 
-                                                    ? "bg-primary/5 border-primary text-primary" 
+                                                selectedAspectRatio.id === ratio.id
+                                                    ? "bg-primary/5 border-primary text-primary"
                                                     : "bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/5 text-text-sub dark:text-gray-500 hover:border-gray-300 dark:hover:border-white/10 hover:text-text-main dark:hover:text-gray-300"
                                             )}
                                         >
@@ -318,31 +319,31 @@ greet('World');`);
                             {/* Window Props */}
                             <div className="space-y-4">
                                 <label className="text-xs font-bold text-text-sub dark:text-gray-500 uppercase tracking-wider">Window Settings</label>
-                                
+
                                 {/* Width Slider */}
                                 <div className="space-y-1">
-                                     <div className="flex justify-between text-xs text-text-sub dark:text-gray-400">
+                                    <div className="flex justify-between text-xs text-text-sub dark:text-gray-400">
                                         <span>Width</span>
                                         <span>{snippetWidth}px</span>
-                                     </div>
-                                     <input 
+                                    </div>
+                                    <input
                                         type="range" min="300" max="1000" value={snippetWidth}
                                         onChange={(e) => setSnippetWidth(Number(e.target.value))}
                                         className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
-                                     />
+                                    />
                                 </div>
 
                                 {/* Scale Slider */}
                                 <div className="space-y-1">
-                                     <div className="flex justify-between text-xs text-text-sub dark:text-gray-400">
+                                    <div className="flex justify-between text-xs text-text-sub dark:text-gray-400">
                                         <span>Scale</span>
                                         <span>{Math.round(windowScale * 100)}%</span>
-                                     </div>
-                                     <input 
+                                    </div>
+                                    <input
                                         type="range" min="50" max="500" value={windowScale * 100}
                                         onChange={(e) => setWindowScale(Number(e.target.value) / 100)}
                                         className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
-                                     />
+                                    />
                                 </div>
 
                                 {/* Style Buttons */}
@@ -353,8 +354,8 @@ greet('World');`);
                                             onClick={() => setWindowThemeId(t.id)}
                                             className={clsx(
                                                 "px-3 py-2 text-xs font-medium rounded-lg border transition-all",
-                                                windowThemeId === t.id 
-                                                    ? "bg-white dark:bg-white/10 border-text-main dark:border-white text-text-main dark:text-white" 
+                                                windowThemeId === t.id
+                                                    ? "bg-white dark:bg-white/10 border-text-main dark:border-white text-text-main dark:text-white"
                                                     : "bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/5 text-text-sub dark:text-gray-500 hover:text-text-main dark:hover:text-gray-300"
                                             )}
                                         >
@@ -362,13 +363,27 @@ greet('World');`);
                                         </button>
                                     ))}
                                 </div>
+
+                                {/* Watermark Settings */}
+                                <div className="space-y-1">
+                                    <div className="flex justify-between text-xs text-text-sub dark:text-gray-400">
+                                        <span>Watermark Text</span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={watermarkText}
+                                        onChange={(e) => setWatermarkText(e.target.value)}
+                                        className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-text-main dark:text-gray-200 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600"
+                                        placeholder="Watermark text..."
+                                    />
+                                </div>
                             </div>
 
                             {/* Glassmorphism */}
                             <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/5 space-y-4">
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs font-bold text-text-sub dark:text-gray-400 uppercase tracking-wider">Glass Effect</span>
-                                    <button 
+                                    <button
                                         onClick={() => setGlassEnabled(!glassEnabled)}
                                         className={clsx(
                                             "w-10 h-5 rounded-full relative transition-colors focus:ring-2 focus:ring-primary/50 focus:outline-none",
@@ -380,20 +395,20 @@ greet('World');`);
                                 </div>
                                 {glassEnabled && (
                                     <div className="space-y-3">
-                                         <div className="space-y-1">
+                                        <div className="space-y-1">
                                             <div className="flex justify-between text-[10px] text-text-sub dark:text-gray-500">
                                                 <span>Blur</span>
                                                 <span>{glassBlur}px</span>
                                             </div>
                                             <input type="range" min="0" max="40" value={glassBlur} onChange={e => setGlassBlur(Number(e.target.value))} className="w-full h-1 bg-gray-200 dark:bg-white/10 accent-primary rounded-lg appearance-none cursor-pointer" />
-                                         </div>
-                                         <div className="space-y-1">
+                                        </div>
+                                        <div className="space-y-1">
                                             <div className="flex justify-between text-[10px] text-text-sub dark:text-gray-500">
                                                 <span>Opacity</span>
                                                 <span>{glassOpacity}%</span>
                                             </div>
                                             <input type="range" min="0" max="100" value={glassOpacity} onChange={e => setGlassOpacity(Number(e.target.value))} className="w-full h-1 bg-gray-200 dark:bg-white/10 accent-primary rounded-lg appearance-none cursor-pointer" />
-                                         </div>
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -414,7 +429,7 @@ greet('World');`);
                                             title={bg.name}
                                         />
                                     ))}
-                                    <button 
+                                    <button
                                         onClick={() => fileInputRef.current?.click()}
                                         className={clsx(
                                             "aspect-square rounded-lg border-2 border-dashed flex items-center justify-center transition-all bg-gray-50 dark:bg-white/5",
@@ -472,9 +487,9 @@ greet('World');`);
             {/* --- PREVIEW AREA --- */}
             <div className="flex-1 relative overflow-auto flex items-center justify-center bg-transparent transition-colors">
                 {/* Dotted Grid Background */}
-                <div 
+                <div
                     className="absolute inset-0 opacity-[0.2] pointer-events-none dark:invert"
-                    style={{ backgroundImage: 'radial-gradient(#888 1px, transparent 1px)', backgroundSize: '24px 24px' }} 
+                    style={{ backgroundImage: 'radial-gradient(#888 1px, transparent 1px)', backgroundSize: '24px 24px' }}
                 />
 
                 {/* ZOOM Controls for Preview */}
@@ -496,7 +511,7 @@ greet('World');`);
 
                 {/* Canvas Scroll Wrapper */}
                 <div ref={containerRef} className="w-full h-full overflow-hidden flex items-center justify-center relative">
-                    <div 
+                    <div
                         className="transition-transform duration-200 ease-out origin-center"
                         style={{ transform: `scale(${canvasScale})` }}
                     >
@@ -525,8 +540,8 @@ greet('World');`);
                                     transform: `scale(${windowScale})`,
                                     transformOrigin: 'center center',
                                     // Glassmorphism logic
-                                    backgroundColor: glassEnabled 
-                                        ? `rgba(${windowThemeId === 'neon' ? '10,10,10' : '30,30,30'}, ${glassOpacity / 100})` 
+                                    backgroundColor: glassEnabled
+                                        ? `rgba(${windowThemeId === 'neon' ? '10,10,10' : '30,30,30'}, ${glassOpacity / 100})`
                                         : (WINDOW_THEMES.find(t => t.id === windowThemeId)?.bg || '#1e1e1e'),
                                     backdropFilter: glassEnabled ? `blur(${glassBlur}px)` : 'none',
                                 }}
@@ -538,7 +553,7 @@ greet('World');`);
                                         windowThemeId === 'ubuntu' ? "bg-[#333] border-black/10" : "bg-white/5 border-white/5"
                                     )}>
                                         <div className="flex-1 flex justify-start">{windowThemeId !== 'win11' && renderWindowControls()}</div>
-                                        <div className={clsx("text-xs font-medium opacity-60 truncate px-2", windowThemeId==='neon' ? "text-purple-300" : "text-gray-400")}>
+                                        <div className={clsx("text-xs font-medium opacity-60 truncate px-2", windowThemeId === 'neon' ? "text-purple-300" : "text-gray-400")}>
                                             {title}
                                         </div>
                                         <div className="flex-1 flex justify-end">{windowThemeId === 'win11' && renderWindowControls()}</div>
@@ -564,10 +579,10 @@ greet('World');`);
                                         textareaClassName="focus:outline-none"
                                     />
                                 </div>
-                                
+
                                 {/* Branding / Watermark */}
                                 <div className="absolute bottom-2 right-4 pointer-events-none opacity-30 text-[10px] font-bold tracking-widest text-white/50">
-                                    NotYourAverage.Tools
+                                    {watermarkText}
                                 </div>
                             </div>
                         </div>
