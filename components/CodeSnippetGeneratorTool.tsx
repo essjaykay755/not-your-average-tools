@@ -108,7 +108,7 @@ greet('World');`);
 
     // Layout
     const [sidebarOpen, setSidebarOpen] = useState(true);
-    const [selectedAspectRatio, setSelectedAspectRatio] = useState(ASPECT_RATIOS[1]); // Default 16:9
+    const [selectedAspectRatio, setSelectedAspectRatio] = useState(ASPECT_RATIOS[0]); // Default Auto
     const [canvasScale, setCanvasScale] = useState(0.6); // Viewport zoom
 
     const exportRef = useRef<HTMLDivElement>(null);
@@ -184,9 +184,17 @@ greet('World');`);
                 // Force specific dimensions to match the aspect ratio presets (unless auto)
                 width: selectedAspectRatio.id !== 'auto' ? selectedAspectRatio.w : undefined,
                 height: selectedAspectRatio.id !== 'auto' ? selectedAspectRatio.h : undefined,
-            });
+                onClone: (clonedNode: HTMLElement) => {
+                    const innerWindow = clonedNode.querySelector('#snippet-window') as HTMLElement;
+                    if (innerWindow) {
+                        innerWindow.style.transition = 'none';
+                        innerWindow.style.transform = `scale(${windowScale})`; // Ensure scale is locked
+                    }
+                }
+            } as any);
             const link = document.createElement('a');
-            link.download = `snippet-${new Date().getTime()}.png`;
+            const sanitizedTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'snippet';
+            link.download = `${sanitizedTitle}-NotYourAverageTools-${new Date().getTime()}.png`;
             link.href = dataUrl;
             link.click();
         } catch (err) {
@@ -320,7 +328,7 @@ greet('World');`);
                                      <input 
                                         type="range" min="300" max="1000" value={snippetWidth}
                                         onChange={(e) => setSnippetWidth(Number(e.target.value))}
-                                        className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                                        className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
                                      />
                                 </div>
 
@@ -333,7 +341,7 @@ greet('World');`);
                                      <input 
                                         type="range" min="50" max="500" value={windowScale * 100}
                                         onChange={(e) => setWindowScale(Number(e.target.value) / 100)}
-                                        className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                                        className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
                                      />
                                 </div>
 
@@ -377,14 +385,14 @@ greet('World');`);
                                                 <span>Blur</span>
                                                 <span>{glassBlur}px</span>
                                             </div>
-                                            <input type="range" min="0" max="40" value={glassBlur} onChange={e => setGlassBlur(Number(e.target.value))} className="w-full h-1 bg-gray-200 dark:bg-gray-700 accent-primary rounded-lg appearance-none cursor-pointer" />
+                                            <input type="range" min="0" max="40" value={glassBlur} onChange={e => setGlassBlur(Number(e.target.value))} className="w-full h-1 bg-gray-200 dark:bg-white/10 accent-primary rounded-lg appearance-none cursor-pointer" />
                                          </div>
                                          <div className="space-y-1">
                                             <div className="flex justify-between text-[10px] text-text-sub dark:text-gray-500">
                                                 <span>Opacity</span>
                                                 <span>{glassOpacity}%</span>
                                             </div>
-                                            <input type="range" min="0" max="100" value={glassOpacity} onChange={e => setGlassOpacity(Number(e.target.value))} className="w-full h-1 bg-gray-200 dark:bg-gray-700 accent-primary rounded-lg appearance-none cursor-pointer" />
+                                            <input type="range" min="0" max="100" value={glassOpacity} onChange={e => setGlassOpacity(Number(e.target.value))} className="w-full h-1 bg-gray-200 dark:bg-white/10 accent-primary rounded-lg appearance-none cursor-pointer" />
                                          </div>
                                     </div>
                                 )}
@@ -507,6 +515,7 @@ greet('World');`);
                         >
                             {/* Inner Code Window */}
                             <div
+                                id="snippet-window"
                                 className={clsx(
                                     "relative transition-all duration-300 rounded-xl overflow-hidden",
                                     WINDOW_THEMES.find(t => t.id === windowThemeId)?.class
@@ -514,6 +523,7 @@ greet('World');`);
                                 style={{
                                     width: `${snippetWidth}px`,
                                     transform: `scale(${windowScale})`,
+                                    transformOrigin: 'center center',
                                     // Glassmorphism logic
                                     backgroundColor: glassEnabled 
                                         ? `rgba(${windowThemeId === 'neon' ? '10,10,10' : '30,30,30'}, ${glassOpacity / 100})` 
