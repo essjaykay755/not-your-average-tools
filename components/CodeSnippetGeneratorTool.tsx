@@ -324,7 +324,7 @@ greet('World');`);
                                 <div className="space-y-1">
                                     <div className="flex justify-between text-xs text-text-sub dark:text-gray-400">
                                         <span>Width</span>
-                                        <span>{snippetWidth}px</span>
+                                        <span>{Math.round(snippetWidth * windowScale)}px</span>
                                     </div>
                                     <input
                                         type="range" min="300" max="1000" value={snippetWidth}
