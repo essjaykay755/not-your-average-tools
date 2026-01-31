@@ -231,8 +231,9 @@ filter: blur(${blur}px);`;
                                             min="0"
                                             max="100"
                                             value={point.x}
+                                            value={point.x}
                                             onChange={(e) => updatePoint(point.id, { x: parseInt(e.target.value) })}
-                                            className="w-full accent-primary"
+                                            className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
                                         />
                                     </div>
                                     <div>
@@ -242,8 +243,9 @@ filter: blur(${blur}px);`;
                                             min="0"
                                             max="100"
                                             value={point.y}
+                                            value={point.y}
                                             onChange={(e) => updatePoint(point.id, { y: parseInt(e.target.value) })}
-                                            className="w-full accent-primary"
+                                            className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
                                         />
                                     </div>
                                 </div>
@@ -293,8 +295,10 @@ filter: blur(${blur}px);`;
                                     min="0"
                                     max="150"
                                     value={blur}
+                                    max="150"
+                                    value={blur}
                                     onChange={(e) => setBlur(parseInt(e.target.value))}
-                                    className="w-full accent-primary"
+                                    className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
                                 />
                             </div>
                         </div>
