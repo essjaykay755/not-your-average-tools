@@ -1,4 +1,4 @@
-'s a still a fine black line"use client";
+"use client";
 
 import React, { useState, useCallback, useRef } from 'react';
 import { Download, RefreshCw, Copy, Check, Palette } from 'lucide-react';

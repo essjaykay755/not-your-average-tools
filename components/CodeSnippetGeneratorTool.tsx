@@ -556,12 +556,13 @@ greet('World');`);
                                 id="snippet-window"
                                 className={clsx(
                                     "relative transition-all duration-300 rounded-xl overflow-hidden",
-                                    WINDOW_THEMES.find(t => t.id === windowThemeId)?.class
+                                    !glassEnabled && WINDOW_THEMES.find(t => t.id === windowThemeId)?.class
                                 )}
                                 style={{
                                     width: `${snippetWidth}px`,
                                     transform: `scale(${windowScale})`,
                                     transformOrigin: 'center center',
+                                    border: glassEnabled ? 'none' : undefined,
                                 }}
                             >
                                 {/* Blurred background layer for glassmorphism (works in both preview and export) */}
