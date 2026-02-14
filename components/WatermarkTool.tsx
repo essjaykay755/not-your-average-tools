@@ -21,7 +21,7 @@ export const WatermarkTool = () => {
     const [rotation, setRotation] = useState(0); // Assuming 0 rotation based on original code, but good to have
     const [boldness, setBoldness] = useState(0.0);
     const [blur, setBlur] = useState(0.0);
-    const [seam, setSeam] = useState(0);
+    const [seam, setSeam] = useState(4);
     const [decay, setDecay] = useState(1.0);
     const [linearMath, setLinearMath] = useState(false);
     const [showMask, setShowMask] = useState(true);
@@ -48,7 +48,7 @@ export const WatermarkTool = () => {
                 setImage(img);
                 // Reset defaults
                 setAlpha(0.550); setScale(1.0); setPosX(0); setPosY(0);
-                setBoldness(0.0); setBlur(0.0); setSeam(0); setDecay(1.0);
+                setBoldness(0.0); setBlur(0.0); setSeam(4); setDecay(1.0);
                 setRotation(0);
             };
             img.src = evt.target?.result as string;
@@ -374,7 +374,13 @@ export const WatermarkTool = () => {
             )}
 
             {image && (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div
+                    className="grid grid-cols-1 lg:grid-cols-12 gap-8"
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={handleDrop}
+                >
 
                     {/* LEFT PANEL: CONTROLS */}
                     <div className="lg:col-span-4 space-y-6">

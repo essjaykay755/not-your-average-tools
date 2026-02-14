@@ -562,50 +562,70 @@ greet('World');`);
                                     width: `${snippetWidth}px`,
                                     transform: `scale(${windowScale})`,
                                     transformOrigin: 'center center',
-                                    // Glassmorphism logic
-                                    backgroundColor: glassEnabled
-                                        ? `rgba(${windowThemeId === 'neon' ? '10,10,10' : '30,30,30'}, ${glassOpacity / 100})`
-                                        : (WINDOW_THEMES.find(t => t.id === windowThemeId)?.bg || '#1e1e1e'),
-                                    backdropFilter: glassEnabled ? `blur(${glassBlur}px)` : 'none',
                                 }}
                             >
-                                {/* Window Header */}
-                                {windowThemeId !== 'minimal' && (
-                                    <div className={clsx(
-                                        "px-4 py-3 flex items-center justify-between border-b transition-colors",
-                                        windowThemeId === 'ubuntu' ? "bg-[#333] border-black/10" : "bg-white/5 border-white/5"
-                                    )}>
-                                        <div className="flex-1 flex justify-start">{windowThemeId !== 'win11' && renderWindowControls()}</div>
-                                        <div className={clsx("text-xs font-medium opacity-60 truncate px-2", windowThemeId === 'neon' ? "text-purple-300" : "text-gray-400")}>
-                                            {title}
-                                        </div>
-                                        <div className="flex-1 flex justify-end">{windowThemeId === 'win11' && renderWindowControls()}</div>
-                                    </div>
-                                )}
-
-                                {/* Editor Content Render */}
-                                <div className="p-0 relative">
-                                    <Editor
-                                        value={code}
-                                        onValueChange={setCode}
-                                        highlight={highlight}
-                                        padding={24}
+                                {/* Blurred background layer for glassmorphism (works in both preview and export) */}
+                                {glassEnabled && (
+                                    <div
+                                        className="absolute z-0"
                                         style={{
-                                            fontFamily: '"Fira Code", "Fira Mono", monospace',
-                                            fontSize: 14,
-                                            backgroundColor: 'transparent',
+                                            background: background.includes('gradient') || background.includes('#') ? background : `url(${background}) center/cover no-repeat`,
+                                            filter: `blur(${glassBlur}px)`,
+                                            top: -glassBlur * 2,
+                                            left: -glassBlur * 2,
+                                            right: -glassBlur * 2,
+                                            bottom: -glassBlur * 2,
                                         }}
-                                        className={clsx(
-                                            "min-h-[100px] cursor-text",
-                                            windowThemeId === 'neon' ? "text-purple-50 drop-shadow-[0_0_2px_rgba(255,255,255,0.3)]" : "text-gray-200"
-                                        )}
-                                        textareaClassName="focus:outline-none"
                                     />
-                                </div>
+                                )}
+                                {/* Semi-transparent glass overlay */}
+                                <div
+                                    className="absolute inset-0 z-[1]"
+                                    style={{
+                                        backgroundColor: glassEnabled
+                                            ? `rgba(${windowThemeId === 'neon' ? '10,10,10' : '30,30,30'}, ${glassOpacity / 100})`
+                                            : (WINDOW_THEMES.find(t => t.id === windowThemeId)?.bg || '#1e1e1e'),
+                                    }}
+                                />
+                                {/* Window Header - needs higher z-index */}
+                                <div className="relative z-10">
+                                    {windowThemeId !== 'minimal' && (
+                                        <div className={clsx(
+                                            "px-4 py-3 flex items-center justify-between border-b transition-colors",
+                                            windowThemeId === 'ubuntu' ? "bg-[#333] border-black/10" : "bg-white/5 border-white/5"
+                                        )}>
+                                            <div className="flex-1 flex justify-start">{windowThemeId !== 'win11' && renderWindowControls()}</div>
+                                            <div className={clsx("text-xs font-medium opacity-60 truncate px-2", windowThemeId === 'neon' ? "text-purple-300" : "text-gray-400")}>
+                                                {title}
+                                            </div>
+                                            <div className="flex-1 flex justify-end">{windowThemeId === 'win11' && renderWindowControls()}</div>
+                                        </div>
+                                    )}
 
-                                {/* Branding / Watermark */}
-                                <div className="absolute bottom-2 right-4 pointer-events-none opacity-30 text-[10px] font-bold tracking-widest text-white/50">
-                                    {watermarkText}
+                                    {/* Editor Content Render */}
+                                    <div className="p-0 relative">
+                                        <Editor
+                                            value={code}
+                                            onValueChange={setCode}
+                                            highlight={highlight}
+                                            padding={24}
+                                            style={{
+                                                fontFamily: '"Fira Code", "Fira Mono", monospace',
+                                                fontSize: 14,
+                                                backgroundColor: 'transparent',
+                                            }}
+                                            className={clsx(
+                                                "min-h-[100px] cursor-text",
+                                                windowThemeId === 'neon' ? "text-purple-50 drop-shadow-[0_0_2px_rgba(255,255,255,0.3)]" : "text-gray-200"
+                                            )}
+                                            textareaClassName="focus:outline-none"
+                                        />
+                                    </div>
+
+                                    {/* Branding / Watermark */}
+                                    <div className="absolute bottom-2 right-4 pointer-events-none opacity-30 text-[10px] font-bold tracking-widest text-white/50">
+                                        {watermarkText}
+                                    </div>
                                 </div>
                             </div>
                         </div>

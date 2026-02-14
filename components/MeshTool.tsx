@@ -1,4 +1,4 @@
-"use client";
+'s a still a fine black line"use client";
 
 import React, { useState, useCallback, useRef } from 'react';
 import { Download, RefreshCw, Copy, Check, Palette } from 'lucide-react';
@@ -231,7 +231,6 @@ filter: blur(${blur}px);`;
                                             min="0"
                                             max="100"
                                             value={point.x}
-                                            value={point.x}
                                             onChange={(e) => updatePoint(point.id, { x: parseInt(e.target.value) })}
                                             className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
                                         />
@@ -242,7 +241,6 @@ filter: blur(${blur}px);`;
                                             type="range"
                                             min="0"
                                             max="100"
-                                            value={point.y}
                                             value={point.y}
                                             onChange={(e) => updatePoint(point.id, { y: parseInt(e.target.value) })}
                                             className="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary"
@@ -293,8 +291,6 @@ filter: blur(${blur}px);`;
                                 <input
                                     type="range"
                                     min="0"
-                                    max="150"
-                                    value={blur}
                                     max="150"
                                     value={blur}
                                     onChange={(e) => setBlur(parseInt(e.target.value))}
