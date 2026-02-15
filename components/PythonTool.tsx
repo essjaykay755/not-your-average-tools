@@ -2,16 +2,30 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs';
-import 'prismjs/components/prism-python';
-import 'prismjs/themes/prism-tomorrow.css'; // Importing a built-in theme if available, otherwise we'll add styles
+import Prism from 'prismjs';
+import 'prismjs/themes/prism-tomorrow.css';
+
+// Ensure Prism is available globally for its components to register
+if (typeof window !== 'undefined') {
+    (window as any).Prism = Prism;
+    require('prismjs/components/prism-python');
+}
 
 declare global {
     interface Window {
         loadPyodide: any;
         pyodide: any;
+        Prism: any;
     }
 }
+
+// Safe highlight function for Python
+const highlightCode = (code: string) => {
+    if (Prism.languages.python) {
+        return Prism.highlight(code, Prism.languages.python, 'python');
+    }
+    return code;
+};
 
 export const PythonTool: React.FC = () => {
     const [code, setCode] = useState<string>(`# Write your Python code here
@@ -157,8 +171,8 @@ print(f"2 + 3 = {add(2, 3)}")`);
                         onClick={runCode}
                         disabled={!isPyodideReady || isRunning}
                         className={`flex items-center gap-2 px-6 py-2 text-sm font-bold text-black rounded-lg transition-all shadow-md active:scale-95 ${!isPyodideReady || isRunning
-                                ? 'bg-gray-300 cursor-not-allowed text-gray-500'
-                                : 'bg-[#FACC15] hover:brightness-110'
+                            ? 'bg-gray-300 cursor-not-allowed text-gray-500'
+                            : 'bg-[#FACC15] hover:brightness-110'
                             }`}
                     >
                         <span className="material-symbols-outlined icon-sm">play_arrow</span>
@@ -180,7 +194,7 @@ print(f"2 + 3 = {add(2, 3)}")`);
                         <Editor
                             value={code}
                             onValueChange={code => setCode(code)}
-                            highlight={code => highlight(code, languages.python, 'python')}
+                            highlight={highlightCode}
                             padding={16}
                             className="prism-editor"
                             textareaClassName="focus:outline-none"

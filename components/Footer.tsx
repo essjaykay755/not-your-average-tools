@@ -24,15 +24,16 @@ export const Footer: React.FC = () => {
             <div>
               <div className="flex items-center gap-3 mb-4 relative">
                 <div className="relative w-10 h-10 md:w-12 md:h-12 z-10">
-                   <Image 
-                      src="/logo.png" 
-                      alt="Logo" 
-                      fill
-                      className="object-contain"
-                   />
+                  <Image
+                    src="/logo.png"
+                    alt="Logo"
+                    fill
+                    sizes="(max-width: 768px) 40px, 48px"
+                    className="object-contain"
+                  />
                 </div>
                 {/* Footer Glow/Shadow behind logo */}
-                 <div className="absolute -left-4 -top-4 w-24 h-24 bg-primary/20 blur-xl rounded-full opacity-50 pointer-events-none"></div>
+                <div className="absolute -left-4 -top-4 w-24 h-24 bg-primary/20 blur-xl rounded-full opacity-50 pointer-events-none"></div>
 
                 <h3 className="text-2xl font-black tracking-tighter text-text-main dark:text-white relative z-10">NotYourAverage<span className="text-primary">.Tools</span></h3>
               </div>

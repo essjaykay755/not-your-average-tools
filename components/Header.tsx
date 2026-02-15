@@ -50,23 +50,23 @@ export const Header: React.FC = () => {
     <header className="w-full relative z-50 pt-8 px-6 md:px-8 mb-4 bg-transparent">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand */}
-        <Link href="/" className="group flex items-center gap-3 select-none relative">
+        <Link href="/" className="flex items-center gap-3 select-none relative">
 
 
           <div className="relative flex items-center gap-3">
-            <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
+
             {/* Main Logo */}
-            <div className="relative z-10 w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 transition-transform duration-300">
-                <Image 
-                    src="/logo.png" 
-                    alt="Logo" 
-                    fill
-                    className="object-contain"
-                />
+            <div className="relative z-10 w-10 h-10 md:w-12 md:h-12">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                fill
+                sizes="(max-width: 768px) 40px, 48px"
+                className="object-contain"
+              />
             </div>
 
-            <span className="relative z-10 text-2xl md:text-3xl font-black tracking-tighter text-text-main dark:text-white group-hover:scale-105 transition-transform duration-300 block">
+            <span className="relative z-10 text-2xl md:text-3xl font-black tracking-tighter text-text-main dark:text-white block">
               NotYourAverage<span className="text-primary">.Tools</span>
             </span>
           </div>

@@ -3,16 +3,21 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-markdown';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-tsx';
-import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-sql';
+
+// Ensure Prism is available globally for its components to register
+if (typeof window !== 'undefined') {
+    (window as any).Prism = Prism;
+    require('prismjs/components/prism-javascript');
+    require('prismjs/components/prism-typescript');
+    require('prismjs/components/prism-css');
+    require('prismjs/components/prism-json');
+    require('prismjs/components/prism-python');
+    require('prismjs/components/prism-markdown');
+    require('prismjs/components/prism-jsx');
+    require('prismjs/components/prism-tsx');
+    require('prismjs/components/prism-bash');
+    require('prismjs/components/prism-sql');
+}
 import { PRISM_THEMES, PrismThemeKey } from '../data/prismThemes';
 import * as htmlToImage from 'html-to-image';
 import {

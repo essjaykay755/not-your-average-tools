@@ -4,6 +4,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
+
+// Ensure Prism is available globally for its components to register
+if (typeof window !== 'undefined') {
+    (window as any).Prism = Prism;
+    require('prismjs/components/prism-sql');
+}
 import { Play, Database, Trash2, RefreshCcw, Table as TableIcon } from 'lucide-react';
 
 // Safe highlight function that checks if language exists
