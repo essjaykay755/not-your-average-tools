@@ -83,6 +83,7 @@ const ASPECT_RATIOS = [
     { id: '16:9', label: '16:9', w: 1920, h: 1080, icon: Monitor },
     { id: '4:3', label: '4:3', w: 1200, h: 900, icon: Tablet },
     { id: '1:1', label: '1:1', w: 1080, h: 1080, icon: Square },
+    { id: '4:5', label: '4:5', w: 1080, h: 1350, icon: ImageIcon },
     { id: '9:16', label: '9:16', w: 1080, h: 1920, icon: Smartphone },
 ];
 
